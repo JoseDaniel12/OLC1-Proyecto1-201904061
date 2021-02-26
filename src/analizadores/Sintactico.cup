@@ -1,0 +1,92 @@
+package analizadores;
+import java_cup.runtime.*;
+
+parser code 
+{:
+    //Codigo que se le agrega al parser
+
+    //Codigo para Errores Sintacticos
+    public void syntax_error(Symbol s){ 
+        System.out.println("Error Sintactico en la Linea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+    } 
+
+    //Codigo para errores que ya no se pueden recuperar
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error sintactico irrecuperable en la Linea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido."); 
+    }  
+:} 
+
+terminal String admiracion, hash, dollar, porcentaje, amberson, parentesisA, parentesisC, asterisco;
+terminal String mas, coma, guion, punto, slash, dosPts, ptyComa, menor, igual, mayor, interrogacion;
+terminal String arroba, corcheteA, sombrero, underScore, llaveA, or, llaveC, colocho, slashInverso;
+terminal String conj, entero, letra, simbolo, identificador;
+
+non terminal String INICIO, CUERPO, EVALUACIONES, CONJNOTACION, LISTASIMBOLOS, EXPRESION, SIMBOLO;
+
+precedence left or;
+precedence left punto;
+precedence left mas, asterisco, interrogacion;
+precedence left parentesisA, parentesisC;
+
+
+start with INICIO; 
+INICIO::= llaveA CUERPO:a porcentaje porcentaje porcentaje porcentaje  EVALUACIONES:b llaveC     {:System.out.println(a+b);:};    
+
+CUERPO  ::= CUERPO:c conj dosPts identificador guion mayor CONJNOTACION:a ptyComa  {:RESULT=a;:}
+            |CUERPO:c identificador guion mayor EXPRESION:a ptyComa {:RESULT=a;:} 
+            |conj dosPts identificador guion mayor CONJNOTACION:a ptyComa {:RESULT=a;:}
+            |identificador guion mayor EXPRESION:a ptyComa {:RESULT=a;:}
+;
+
+CONJNOTACION ::= SIMBOLO:a colocho SIMBOLO:b {:RESULT=a+b;:}
+            |LISTASIMBOLOS:b                 {:RESULT=b;:}
+;
+LISTASIMBOLOS ::= LISTASIMBOLOS:a coma SIMBOLO {:RESULT=a;:}
+                  |SIMBOLO:a                   {:RESULT=a;:}
+;
+
+EXPRESION ::= punto EXPRESION:a EXPRESION:b  {:RESULT=a+b;:}
+              |or EXPRESION:a EXPRESION:b    {:RESULT=a+b;:}
+              |asterisco EXPRESION:a         {:RESULT=a;:}
+              |mas EXPRESION:a               {:RESULT=a;:}
+              |interrogacion EXPRESION:a     {:RESULT=a;:}
+              |llaveA identificador:a llaveC {:RESULT=a;:}
+              |simbolo:a                     {:RESULT=a;:}
+;
+  
+SIMBOLO ::= admiracion:a {:RESULT=a;:} 
+    |hash:a              {:RESULT=a;:}
+    |dollar:a            {:RESULT=a;:} 
+    |porcentaje:a        {:RESULT=a;:} 
+    |amberson:a          {:RESULT=a;:} 
+    |parentesisA:a       {:RESULT=a;:} 
+    |parentesisC:a       {:RESULT=a;:} 
+    |asterisco:a         {:RESULT=a;:}
+    |mas:a               {:RESULT=a;:}
+    |coma:a              {:RESULT=a;:}
+    |guion:a             {:RESULT=a;:}
+    |punto:a             {:RESULT=a;:}
+    |slash:a             {:RESULT=a;:}
+    |dosPts:a            {:RESULT=a;:}
+    |ptyComa:a           {:RESULT=a;:}
+    |menor:a             {:RESULT=a;:}
+    |igual:a             {:RESULT=a;:}
+    |mayor:a             {:RESULT=a;:}
+    |interrogacion:a     {:RESULT=a;:}
+    |arroba:a            {:RESULT=a;:} 
+    |corcheteA:a         {:RESULT=a;:}
+    |sombrero:a          {:RESULT=a;:}
+    |underScore:a        {:RESULT=a;:}
+    |llaveA:a            {:RESULT=a;:}
+    |or:a                {:RESULT=a;:}
+    |llaveC:a            {:RESULT=a;:}
+    |colocho:a           {:RESULT=a;:}
+    |slashInverso:a      {:RESULT=a;:}
+    |entero:a            {:RESULT=a;:}
+    |letra:a             {:RESULT=a;:}
+    |simbolo:a           {:RESULT=a;:}
+; 
+
+EVALUACIONES ::= EVALUACIONES:a identificador dosPts simbolo ptyComa
+                 |identificador dosPts simbolo ptyComa
+;
