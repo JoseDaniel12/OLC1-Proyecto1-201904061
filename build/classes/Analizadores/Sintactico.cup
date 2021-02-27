@@ -1,9 +1,14 @@
 package analizadores;
 import java_cup.runtime.*;
+import java.util.Arrays;
+import compi1_proyecto1.AppState;
+import compi1_proyecto1.Nodo;
 
 parser code 
 {:
     //Codigo que se le agrega al parser
+    public int contador = 0;
+    public int idHoja = 0;
 
     //Codigo para Errores Sintacticos
     public void syntax_error(Symbol s){ 
@@ -21,7 +26,8 @@ terminal String mas, coma, guion, punto, slash, dosPts, ptyComa, menor, igual, m
 terminal String arroba, corcheteA, sombrero, underScore, llaveA, or, llaveC, colocho, slashInverso;
 terminal String conj, entero, letra, simbolo, identificador;
 
-non terminal String INICIO, CUERPO, EVALUACIONES, CONJNOTACION, LISTASIMBOLOS, EXPRESION, SIMBOLO;
+non terminal String INICIO, CUERPO, EVALUACIONES, CONJNOTACION, LISTASIMBOLOS, SIMBOLO;
+non terminal Nodo EXPRESION;
 
 precedence left or;
 precedence left punto;
@@ -30,28 +36,44 @@ precedence left parentesisA, parentesisC;
 
 
 start with INICIO; 
-INICIO::= llaveA CUERPO:a porcentaje porcentaje porcentaje porcentaje  EVALUACIONES:b llaveC     {:System.out.println(a+b);:};    
+INICIO::= llaveA CUERPO:a porcentaje porcentaje porcentaje porcentaje  EVALUACIONES:b llaveC;    
 
-CUERPO  ::= CUERPO:c conj dosPts identificador guion mayor CONJNOTACION:a ptyComa  {:RESULT=a;:}
-            |CUERPO:c identificador guion mayor EXPRESION:a ptyComa {:RESULT=a;:} 
-            |conj dosPts identificador guion mayor CONJNOTACION:a ptyComa {:RESULT=a;:}
-            |identificador guion mayor EXPRESION:a ptyComa {:RESULT=a;:}
+CUERPO  ::= CUERPO:c conj dosPts identificador guion mayor CONJNOTACION:a ptyComa
+            |CUERPO:c identificador guion mayor EXPRESION:a ptyComa
+            {: 
+                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja), Arrays.asList(idHoja), null, null);   
+                Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
+                AppState.arboles.add(raiz); 
+                contador = 0;
+                idHoja = 0;
+            :}
+
+            |conj dosPts identificador guion mayor CONJNOTACION:a ptyComa
+            |identificador guion mayor EXPRESION:a ptyComa  
+            {: 
+                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja), Arrays.asList(idHoja), null, null);   
+                Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
+                AppState.arboles.add(raiz); 
+                contador = 0;
+                idHoja = 0;
+            :}
+
 ;
 
-CONJNOTACION ::= SIMBOLO:a colocho SIMBOLO:b {:RESULT=a+b;:}
-            |LISTASIMBOLOS:b                 {:RESULT=b;:}
+CONJNOTACION ::= SIMBOLO:a colocho SIMBOLO:b
+            |LISTASIMBOLOS:b
 ;
-LISTASIMBOLOS ::= LISTASIMBOLOS:a coma SIMBOLO {:RESULT=a;:}
-                  |SIMBOLO:a                   {:RESULT=a;:}
+LISTASIMBOLOS ::= LISTASIMBOLOS:a coma SIMBOLO
+                  |SIMBOLO:a
 ;
 
-EXPRESION ::= punto EXPRESION:a EXPRESION:b  {:RESULT=a+b;:}
-              |or EXPRESION:a EXPRESION:b    {:RESULT=a+b;:}
-              |asterisco EXPRESION:a         {:RESULT=a;:}
-              |mas EXPRESION:a               {:RESULT=a;:}
-              |interrogacion EXPRESION:a     {:RESULT=a;:}
-              |llaveA identificador:a llaveC {:RESULT=a;:}
-              |simbolo:a                     {:RESULT=a;:}
+EXPRESION ::= punto EXPRESION:a EXPRESION:b  {:RESULT=new Nodo("H" + contador, ".", a, b); contador++;:}
+              |or EXPRESION:a EXPRESION:b    {:RESULT=new Nodo("H" + contador, "|", a, b); contador++;:}
+              |asterisco EXPRESION:a         {:RESULT=new Nodo("H" + contador, "*", a, null); contador++;:}
+              |mas EXPRESION:a               {:RESULT=new Nodo("H" + contador, "+", a, null); contador++;:}
+              |interrogacion EXPRESION:a     {:RESULT=new Nodo("H" + contador, "?", a, null); contador++;:}
+              |llaveA identificador:a llaveC {:RESULT=new Nodo(idHoja + "", a, "N", Arrays.asList(idHoja), Arrays.asList(idHoja), null, null); idHoja++;:}
+              |simbolo:a                     {:RESULT=new Nodo(idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja), Arrays.asList(idHoja), null, null); idHoja++;:}
 ;
   
 SIMBOLO ::= admiracion:a {:RESULT=a;:} 
