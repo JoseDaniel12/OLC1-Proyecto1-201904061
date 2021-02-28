@@ -30,7 +30,7 @@ import javax.swing.JFileChooser;
 import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import analizadores.*;
-import static compi1_proyecto1.AppState.graficarArboles;
+
 
 /**
  *
@@ -243,7 +243,9 @@ public class Prueba extends javax.swing.JFrame {
         try {
             parser sintactico = new parser(new lexico(new StringReader(Texto.getText())));
             sintactico.parse();
-            graficarArboles();
+            AppState.graficarArboles();
+            AppState.crearTablasdeSiguientes();
+            AppState.graficarTablasdeSiguientes();
         } catch (Exception e) {
             System.out.println(e);
         }

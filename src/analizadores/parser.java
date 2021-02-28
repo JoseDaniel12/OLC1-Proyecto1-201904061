@@ -229,7 +229,7 @@ public class parser extends java_cup.runtime.lr_parser {
 
     //Codigo que se le agrega al parser
     public int contador = 0;
-    public int idHoja = 0;
+    public int idHoja = 1;
 
     //Codigo para Errores Sintacticos
     public void syntax_error(Symbol s){ 
@@ -321,11 +321,12 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Nodo a = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		 
-                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja), Arrays.asList(idHoja), null, null);   
+                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
                 Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
+                AppState.hojas.put(idHoja + "", "#");
                 AppState.arboles.add(raiz); 
                 contador = 0;
-                idHoja = 0;
+                idHoja = 1;
             
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -351,11 +352,12 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Nodo a = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		 
-                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja), Arrays.asList(idHoja), null, null);   
+                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
+                AppState.hojas.put(idHoja + "", "#");                
                 Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
                 AppState.arboles.add(raiz); 
                 contador = 0;
-                idHoja = 0;
+                idHoja = 1;
             
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -485,7 +487,11 @@ class CUP$parser$actions {
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		RESULT=new Nodo(idHoja + "", a, "N", Arrays.asList(idHoja), Arrays.asList(idHoja), null, null); idHoja++;
+		
+                RESULT = new Nodo(idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);  
+                AppState.hojas.put(idHoja + "", a); 
+                idHoja++;
+              
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -497,7 +503,11 @@ class CUP$parser$actions {
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		RESULT=new Nodo(idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja), Arrays.asList(idHoja), null, null); idHoja++;
+		
+                RESULT=new Nodo(idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
+                AppState.hojas.put(idHoja + "", a); 
+                idHoja++;
+              
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;

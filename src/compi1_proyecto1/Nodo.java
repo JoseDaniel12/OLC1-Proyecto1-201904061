@@ -17,12 +17,12 @@ public class Nodo {
     public String id;
     public String valor;
     public String anunabilidad;
-    public List<Integer> firsts;
-    public List<Integer> lasts;
+    public List<String> firsts;
+    public List<String> lasts;
     public Nodo hizq;
     public Nodo hder;
 
-    public Nodo(String id, String valor, String anunabilidad, List<Integer> firsts, List<Integer> lasts, Nodo hizq, Nodo hder) {
+    public Nodo(String id, String valor, String anunabilidad, List<String> firsts, List<String> lasts, Nodo hizq, Nodo hder) {
         this.id = id;
         this.valor = valor;
         this.anunabilidad = anunabilidad;
