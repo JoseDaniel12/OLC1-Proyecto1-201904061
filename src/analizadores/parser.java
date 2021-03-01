@@ -229,9 +229,9 @@ public class parser extends java_cup.runtime.lr_parser {
 
 
     //Codigo que se le agrega al parser
-    public HashMap<String, String> hojas = new HashMap<>();
-    public int contador = 0;
-    public int idHoja = 1;
+    public static HashMap<String, String> hojas = new HashMap<>();
+    public static int contador = 0;
+    public static int idHoja = 1;
 
     //Codigo para Errores Sintacticos
     public void syntax_error(Symbol s){ 

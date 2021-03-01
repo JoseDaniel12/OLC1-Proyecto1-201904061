@@ -70,12 +70,20 @@ public class AppState {
             Nodo arbol = arboles.get(i);
             tablasdeTransiciones.add(new TablaTransiciones(arbol, hojas.get(i), tablasdeSiguientes.get(i)));
         }
-        
+        /*
         for (TablaTransiciones t : tablasdeTransiciones) {
             for (FilaTransiciones fila : t.filas) {
                 System.out.println(fila.estdoId + fila.elemntosEstado.toString() + " -> " +  fila.transiciones);
             }
             System.out.println("------------");
+        }
+        */
+    }
+    
+    public static void graficarTablasdeTransiciones() throws InterruptedException {
+        for (int i = 0; i < tablasdeTransiciones.size(); i++) {
+            String nombre = "tablaTransiciones_" + i;
+            tablasdeTransiciones.get(i).graficar(nombre);
         }
     }
 
