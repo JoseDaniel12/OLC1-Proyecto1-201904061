@@ -7,6 +7,7 @@ package analizadores;
 
 import java_cup.runtime.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import compi1_proyecto1.AppState;
 import compi1_proyecto1.Nodo;
 import java_cup.runtime.XMLElement;
@@ -228,6 +229,7 @@ public class parser extends java_cup.runtime.lr_parser {
 
 
     //Codigo que se le agrega al parser
+    public HashMap<String, String> hojas = new HashMap<>();
     public int contador = 0;
     public int idHoja = 1;
 
@@ -323,8 +325,10 @@ class CUP$parser$actions {
 		 
                 Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
                 Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
-                AppState.hojas.put(idHoja + "", "#");
+                hojas.put(idHoja + "", "#");
                 AppState.arboles.add(raiz); 
+                AppState.hojas.add(hojas);
+                hojas = new HashMap<>();
                 contador = 0;
                 idHoja = 1;
             
@@ -353,9 +357,11 @@ class CUP$parser$actions {
 		Nodo a = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		 
                 Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
-                AppState.hojas.put(idHoja + "", "#");                
+                hojas.put(idHoja + "", "#");                
                 Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
                 AppState.arboles.add(raiz); 
+                AppState.hojas.add(hojas);
+                hojas = new HashMap<>();
                 contador = 0;
                 idHoja = 1;
             
@@ -489,7 +495,7 @@ class CUP$parser$actions {
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                 RESULT = new Nodo(idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);  
-                AppState.hojas.put(idHoja + "", a); 
+                hojas.put(idHoja + "", a); 
                 idHoja++;
               
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -505,7 +511,7 @@ class CUP$parser$actions {
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT=new Nodo(idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
-                AppState.hojas.put(idHoja + "", a); 
+                hojas.put(idHoja + "", a); 
                 idHoja++;
               
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);

@@ -1,12 +1,14 @@
 package analizadores;
 import java_cup.runtime.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import compi1_proyecto1.AppState;
 import compi1_proyecto1.Nodo;
 
 parser code 
 {:
     //Codigo que se le agrega al parser
+    public HashMap<String, String> hojas = new HashMap<>();
     public int contador = 0;
     public int idHoja = 1;
 
@@ -43,8 +45,10 @@ CUERPO  ::= CUERPO:c conj dosPts identificador guion mayor CONJNOTACION:a ptyCom
             {: 
                 Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
                 Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
-                AppState.hojas.put(idHoja + "", "#");
+                hojas.put(idHoja + "", "#");
                 AppState.arboles.add(raiz); 
+                AppState.hojas.add(hojas);
+                hojas = new HashMap<>();
                 contador = 0;
                 idHoja = 1;
             :}
@@ -53,9 +57,11 @@ CUERPO  ::= CUERPO:c conj dosPts identificador guion mayor CONJNOTACION:a ptyCom
             |identificador guion mayor EXPRESION:a ptyComa  
             {: 
                 Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
-                AppState.hojas.put(idHoja + "", "#");                
+                hojas.put(idHoja + "", "#");                
                 Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
                 AppState.arboles.add(raiz); 
+                AppState.hojas.add(hojas);
+                hojas = new HashMap<>();
                 contador = 0;
                 idHoja = 1;
             :}
@@ -77,13 +83,13 @@ EXPRESION ::= punto EXPRESION:a EXPRESION:b  {:RESULT=new Nodo("H" + contador, "
               |llaveA identificador:a llaveC 
               {:
                 RESULT = new Nodo(idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);  
-                AppState.hojas.put(idHoja + "", a); 
+                hojas.put(idHoja + "", a); 
                 idHoja++;
               :}
               |simbolo:a
               {:
                 RESULT=new Nodo(idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
-                AppState.hojas.put(idHoja + "", a); 
+                hojas.put(idHoja + "", a); 
                 idHoja++;
               :}
 ;

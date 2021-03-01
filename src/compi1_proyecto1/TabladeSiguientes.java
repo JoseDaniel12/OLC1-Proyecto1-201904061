@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,11 +36,11 @@ public class TabladeSiguientes {
 
     public List<FilaSiguientes> filas = new ArrayList<>();
 
-    public TabladeSiguientes(Nodo arbol) {
-        crearTabladeSiguientes(arbol);
+    public TabladeSiguientes(Nodo arbol, HashMap<String, String>  hojas) {
+        crearTabladeSiguientes(arbol, hojas);
     }
 
-    public void crearTabladeSiguientes(Nodo raiz) {
+    public void crearTabladeSiguientes(Nodo raiz, HashMap<String, String>  hojas) {
         Nodo c1 = null;
         Nodo c2 = null;
         if (raiz == null) {
@@ -77,8 +78,8 @@ public class TabladeSiguientes {
             }
         }
 
-        crearTabladeSiguientes(raiz.hizq);
-        crearTabladeSiguientes(raiz.hder);
+        crearTabladeSiguientes(raiz.hizq, hojas);
+        crearTabladeSiguientes(raiz.hder, hojas);
     }
 
     public void graficar(String nombre) throws InterruptedException {

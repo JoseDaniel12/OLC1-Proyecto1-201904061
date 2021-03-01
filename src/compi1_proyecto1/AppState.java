@@ -15,10 +15,11 @@ import java.util.List;
 public class AppState {
     public static File filePath = null;
     public static String texto = "";
-    public static HashMap<String, String> hojas = new HashMap<String, String>();
+    public static List<HashMap<String, String>> hojas = new ArrayList<>();
     public static List<Nodo> arboles = new ArrayList<>();
     public static List<Conjunto> conjuntos = new ArrayList<>();
     public static ArrayList<TabladeSiguientes> tablasdeSiguientes = new ArrayList<>();
+    public static ArrayList<TablaTransiciones> tablasdeTransiciones = new ArrayList<>();
 
 
     public static void graficarArboles() {
@@ -50,8 +51,10 @@ public class AppState {
     }
     
     public static void crearTablasdeSiguientes() {
+        int contador  = 0;
         for (Nodo arbol : arboles) {
-            tablasdeSiguientes.add(new TabladeSiguientes(arbol));
+            tablasdeSiguientes.add(new TabladeSiguientes(arbol, hojas.get(contador)));
+            contador++;
         }
     }
     
@@ -59,6 +62,20 @@ public class AppState {
         for (int i = 0; i < tablasdeSiguientes.size(); i++) {
             String nombre = "tablaSiguientes_" + i;
             tablasdeSiguientes.get(i).graficar(nombre);
+        }
+    }
+    
+    public static void crearTablasdeTransiciones() {
+        for (int i = 0; i < tablasdeSiguientes.size(); i++) {
+            Nodo arbol = arboles.get(i);
+            tablasdeTransiciones.add(new TablaTransiciones(arbol, hojas.get(i), tablasdeSiguientes.get(i)));
+        }
+        
+        for (TablaTransiciones t : tablasdeTransiciones) {
+            for (FilaTransiciones fila : t.filas) {
+                System.out.println(fila.estdoId);
+            }
+            System.out.println("------------");
         }
     }
 
