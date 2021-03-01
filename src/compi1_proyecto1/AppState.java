@@ -73,7 +73,7 @@ public class AppState {
         
         for (TablaTransiciones t : tablasdeTransiciones) {
             for (FilaTransiciones fila : t.filas) {
-                System.out.println(fila.estdoId);
+                System.out.println(fila.estdoId + fila.elemntosEstado.toString() + " -> " +  fila.transiciones);
             }
             System.out.println("------------");
         }

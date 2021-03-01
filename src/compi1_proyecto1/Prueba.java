@@ -246,10 +246,10 @@ public class Prueba extends javax.swing.JFrame {
             AppState.graficarArboles();
             AppState.crearTablasdeSiguientes();
             AppState.graficarTablasdeSiguientes();
-            AppState.crearTablasdeTransiciones();
         } catch (Exception e) {
             System.out.println(e);
         }
+        AppState.crearTablasdeTransiciones();
     }//GEN-LAST:event_BtnAnalizarEntradasActionPerformed
 
     /**
