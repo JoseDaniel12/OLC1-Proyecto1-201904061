@@ -248,6 +248,7 @@ public class Prueba extends javax.swing.JFrame {
             AppState.graficarTablasdeSiguientes();
             AppState.crearTablasdeTransiciones();
             AppState.graficarTablasdeTransiciones();
+            AppState.crearAutomatas();
         } catch (Exception e) {
             System.out.println(e);
         }
