@@ -34,12 +34,12 @@ public class lexico implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED = 
-    "\11\0\1\17\1\2\1\4\1\4\1\3\22\0\1\17\1\6\1\10"+
-    "\1\22\1\23\1\24\1\25\1\13\1\26\1\27\1\30\1\31\1\32"+
-    "\1\33\1\34\1\1\12\14\1\35\1\36\1\5\1\37\1\7\1\40"+
-    "\1\41\2\15\1\50\6\15\1\52\3\15\1\12\1\51\13\15\1\42"+
-    "\1\11\1\0\1\43\1\16\1\0\1\15\1\21\1\50\6\15\1\52"+
-    "\3\15\1\20\1\51\1\21\2\15\1\21\7\15\1\44\1\45\1\46"+
+    "\11\0\1\20\1\2\1\4\1\4\1\3\22\0\1\20\1\6\1\11"+
+    "\1\23\1\24\1\25\1\26\1\14\1\27\1\30\1\31\1\32\1\33"+
+    "\1\34\1\7\1\1\12\15\1\35\1\36\1\5\1\37\1\10\1\40"+
+    "\1\41\2\16\1\50\6\16\1\52\3\16\1\13\1\51\13\16\1\42"+
+    "\1\12\1\0\1\43\1\17\1\0\1\16\1\22\1\50\6\16\1\52"+
+    "\3\16\1\21\1\51\1\22\2\16\1\22\7\16\1\44\1\45\1\46"+
     "\1\47\6\0\1\4\u1fa2\0\1\4\1\4\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
 
   /** 
@@ -54,10 +54,10 @@ public class lexico implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\1\1\10\1\11\1\12\1\13\1\11\1\14\1\15"+
+    "\1\10\1\1\1\11\1\12\1\13\1\14\1\12\1\15"+
     "\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1\25"+
     "\1\26\1\27\1\30\1\31\1\32\1\33\1\34\1\35"+
-    "\1\36\1\37\1\40\1\41\1\11\3\0\1\42\3\43"+
+    "\1\36\1\37\1\40\1\41\1\12\3\0\1\42\3\43"+
     "\1\4\1\0\1\43\1\4\1\44";
 
   private static int [] zzUnpackAction() {
@@ -87,7 +87,7 @@ public class lexico implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ROWMAP_PACKED_0 =
     "\0\0\0\53\0\126\0\53\0\201\0\254\0\53\0\53"+
-    "\0\327\0\u0102\0\u012d\0\u0158\0\53\0\u0183\0\53\0\53"+
+    "\0\53\0\327\0\u0102\0\u012d\0\u0158\0\53\0\u0183\0\53"+
     "\0\53\0\53\0\53\0\53\0\53\0\53\0\53\0\53"+
     "\0\53\0\53\0\53\0\53\0\53\0\53\0\53\0\53"+
     "\0\53\0\53\0\53\0\53\0\u01ae\0\u01d9\0\u0204\0\327"+
@@ -119,20 +119,20 @@ public class lexico implements java_cup.runtime.Scanner {
 
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\2\1\3\1\4\1\5\1\0\1\6\1\7\1\10"+
-    "\1\11\1\12\1\13\1\2\1\14\1\13\1\15\1\5"+
-    "\2\16\1\17\1\20\1\21\1\22\1\23\1\24\1\25"+
+    "\1\11\1\12\1\13\1\14\1\2\1\15\1\14\1\16"+
+    "\1\5\2\17\1\20\1\21\1\22\1\23\1\24\1\25"+
     "\1\26\1\27\1\30\1\31\1\32\1\33\1\34\1\35"+
     "\1\36\1\37\1\40\1\41\1\42\1\43\1\44\1\45"+
-    "\2\13\54\0\1\46\54\0\1\5\13\0\3\5\37\0"+
-    "\1\47\44\0\10\50\1\51\42\50\10\0\1\51\1\0"+
+    "\2\14\54\0\1\46\54\0\1\5\14\0\3\5\36\0"+
+    "\1\47\44\0\11\50\1\51\41\50\11\0\1\51\1\0"+
     "\2\51\4\0\1\51\44\0\1\52\1\0\3\52\1\0"+
-    "\2\52\26\0\3\52\14\0\1\14\41\0\1\5\6\0"+
-    "\1\52\1\0\3\52\1\5\2\53\26\0\3\52\12\0"+
-    "\1\52\1\0\3\52\1\0\2\52\26\0\1\52\1\54"+
-    "\1\52\2\46\2\55\1\0\46\46\6\47\1\56\44\47"+
-    "\12\0\1\57\1\0\3\52\1\0\1\57\1\52\26\0"+
-    "\3\52\6\47\1\56\1\60\43\47\12\0\1\52\1\0"+
-    "\3\52\1\0\2\52\26\0\2\52\1\61";
+    "\2\52\25\0\3\52\15\0\1\15\40\0\1\5\7\0"+
+    "\1\52\1\0\3\52\1\5\2\53\25\0\3\52\13\0"+
+    "\1\52\1\0\3\52\1\0\2\52\25\0\1\52\1\54"+
+    "\1\52\2\46\2\55\1\0\46\46\6\47\1\56\1\0"+
+    "\43\47\13\0\1\57\1\0\3\52\1\0\1\57\1\52"+
+    "\25\0\3\52\6\47\1\56\1\0\1\60\42\47\13\0"+
+    "\1\52\1\0\3\52\1\0\2\52\25\0\2\52\1\61";
 
   private static int [] zzUnpackTrans() {
     int [] result = new int[688];
@@ -173,8 +173,8 @@ public class lexico implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\1\1\1\11\2\1\2\11\4\1\1\11"+
-    "\1\1\26\11\1\1\3\0\1\11\3\1\1\11\1\0"+
+    "\1\0\1\11\1\1\1\11\2\1\3\11\4\1\1\11"+
+    "\1\1\25\11\1\1\3\0\1\11\3\1\1\11\1\0"+
     "\3\1";
 
   private static int [] zzUnpackAttribute() {
@@ -668,82 +668,82 @@ public class lexico implements java_cup.runtime.Scanner {
             // fall through
           case 42: break;
           case 7: 
-            { return new Symbol(sym.mayor,yyline,yychar, yytext());
+            { return new Symbol(sym.punto,yyline,yychar, yytext());
             } 
             // fall through
           case 43: break;
           case 8: 
-            { return new Symbol(sym.slashInverso,yyline,yychar, yytext());
+            { return new Symbol(sym.mayor,yyline,yychar, yytext());
             } 
             // fall through
           case 44: break;
           case 9: 
-            { return new Symbol(sym.letra,yyline,yychar, yytext());
+            { return new Symbol(sym.slashInverso,yyline,yychar, yytext());
             } 
             // fall through
           case 45: break;
           case 10: 
-            { return new Symbol(sym.entero,yyline,yychar, yytext());
+            { return new Symbol(sym.letra,yyline,yychar, yytext());
             } 
             // fall through
           case 46: break;
           case 11: 
-            { return new Symbol(sym.underScore,yyline,yychar, yytext());
+            { return new Symbol(sym.entero,yyline,yychar, yytext());
             } 
             // fall through
           case 47: break;
           case 12: 
-            { return new Symbol(sym.hash,yyline,yychar, yytext());
+            { return new Symbol(sym.underScore,yyline,yychar, yytext());
             } 
             // fall through
           case 48: break;
           case 13: 
-            { return new Symbol(sym.dollar,yyline,yychar, yytext());
+            { return new Symbol(sym.hash,yyline,yychar, yytext());
             } 
             // fall through
           case 49: break;
           case 14: 
-            { return new Symbol(sym.porcentaje,yyline,yychar, yytext());
+            { return new Symbol(sym.dollar,yyline,yychar, yytext());
             } 
             // fall through
           case 50: break;
           case 15: 
-            { return new Symbol(sym.amberson,yyline,yychar, yytext());
+            { return new Symbol(sym.porcentaje,yyline,yychar, yytext());
             } 
             // fall through
           case 51: break;
           case 16: 
-            { return new Symbol(sym.parentesisA,yyline,yychar, yytext());
+            { return new Symbol(sym.amberson,yyline,yychar, yytext());
             } 
             // fall through
           case 52: break;
           case 17: 
-            { return new Symbol(sym.parentesisC,yyline,yychar, yytext());
+            { return new Symbol(sym.parentesisA,yyline,yychar, yytext());
             } 
             // fall through
           case 53: break;
           case 18: 
-            { return new Symbol(sym.asterisco,yyline,yychar, yytext());
+            { return new Symbol(sym.parentesisC,yyline,yychar, yytext());
             } 
             // fall through
           case 54: break;
           case 19: 
-            { return new Symbol(sym.mas,yyline,yychar, yytext());
+            { return new Symbol(sym.asterisco,yyline,yychar, yytext());
             } 
             // fall through
           case 55: break;
           case 20: 
-            { return new Symbol(sym.coma,yyline,yychar, yytext());
+            { return new Symbol(sym.mas,yyline,yychar, yytext());
             } 
             // fall through
           case 56: break;
           case 21: 
-            { return new Symbol(sym.guion,yyline,yychar, yytext());
+            { return new Symbol(sym.coma,yyline,yychar, yytext());
             } 
             // fall through
           case 57: break;
           case 22: 
-            { return new Symbol(sym.punto,yyline,yychar, yytext());
+            { return new Symbol(sym.guion,yyline,yychar, yytext());
             } 
             // fall through
           case 58: break;

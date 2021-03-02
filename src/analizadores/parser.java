@@ -8,7 +8,10 @@ package analizadores;
 import java_cup.runtime.*;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import compi1_proyecto1.AppState;
+import compi1_proyecto1.Conjunto;
 import compi1_proyecto1.Nodo;
 import java_cup.runtime.XMLElement;
 
@@ -36,7 +39,7 @@ public class parser extends java_cup.runtime.lr_parser {
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
     "\000\062\000\002\002\004\000\002\002\012\000\002\003" +
-    "\012\000\002\003\010\000\002\003\011\000\002\003\007" +
+    "\012\000\002\003\011\000\002\003\010\000\002\003\007" +
     "\000\002\005\005\000\002\005\003\000\002\006\005\000" +
     "\002\006\003\000\002\010\005\000\002\010\005\000\002" +
     "\010\004\000\002\010\004\000\002\010\004\000\002\010" +
@@ -121,8 +124,8 @@ public class parser extends java_cup.runtime.lr_parser {
     "\033\ufff1\034\ufff1\043\ufff1\001\002\000\020\013\075\014" +
     "\076\017\073\026\072\033\074\034\100\043\101\001\002" +
     "\000\022\013\ufff6\014\ufff6\017\ufff6\022\ufff6\026\ufff6\033" +
-    "\ufff6\034\ufff6\043\ufff6\001\002\000\010\007\ufffe\040\ufffe" +
-    "\044\ufffe\001\002\000\022\013\ufff4\014\ufff4\017\ufff4\022" +
+    "\ufff6\034\ufff6\043\ufff6\001\002\000\010\007\ufffd\040\ufffd" +
+    "\044\ufffd\001\002\000\022\013\ufff4\014\ufff4\017\ufff4\022" +
     "\ufff4\026\ufff4\033\ufff4\034\ufff4\043\ufff4\001\002\000\022" +
     "\013\ufff5\014\ufff5\017\ufff5\022\ufff5\026\ufff5\033\ufff5\034" +
     "\ufff5\043\ufff5\001\002\000\004\035\110\001\002\000\022" +
@@ -145,7 +148,7 @@ public class parser extends java_cup.runtime.lr_parser {
     "\022\022\023\040\024\044\025\062\026\060\027\055\030" +
     "\025\031\036\032\027\033\045\034\033\035\043\036\052" +
     "\037\034\041\053\042\046\043\047\001\002\000\004\022" +
-    "\136\001\002\000\010\007\ufffd\040\ufffd\044\ufffd\001\002" +
+    "\136\001\002\000\010\007\ufffe\040\ufffe\044\ufffe\001\002" +
     "\000\004\025\140\001\002\000\020\013\075\014\076\017" +
     "\073\026\072\033\074\034\100\043\101\001\002\000\004" +
     "\022\142\001\002\000\010\007\ufffc\040\ufffc\044\ufffc\001" +
@@ -233,6 +236,9 @@ public class parser extends java_cup.runtime.lr_parser {
     public static int contador = 0;
     public static int idHoja = 1;
 
+    public static String[] conjNotacion1 = new String[2];
+    public static List<String> conjNotacion2 = new ArrayList<>();
+
     //Codigo para Errores Sintacticos
     public void syntax_error(Symbol s){ 
         System.out.println("Error Sintactico en la Linea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
@@ -301,19 +307,50 @@ class CUP$parser$actions {
           case 2: // CUERPO ::= CUERPO conj dosPts identificador guion mayor CONJNOTACION ptyComa 
             {
               String RESULT =null;
-		int cleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)).left;
-		int cright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)).right;
-		String c = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-7)).value;
-		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		String b = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		
+                if (conjNotacion2.size() != 0) {
+                   AppState.conjuntos.add(new Conjunto(a,conjNotacion2));
+                   conjNotacion2 = new ArrayList<>();
+                } else {
+                   AppState.conjuntos.add(new Conjunto(a,conjNotacion1));
+                   conjNotacion1 = new String[2];
+                }
+            
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // CUERPO ::= CUERPO identificador guion mayor EXPRESION ptyComa 
+          case 3: // CUERPO ::= conj dosPts identificador guion mayor CONJNOTACION ptyComa 
+            {
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		String b = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		
+                if (conjNotacion2.size() != 0) {
+                   AppState.conjuntos.add(new Conjunto(a,conjNotacion2));
+                   conjNotacion2 = new ArrayList<>();
+                } else {
+                   AppState.conjuntos.add(new Conjunto(a,conjNotacion1));
+                   conjNotacion1 = new String[2];
+                }
+            
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 4: // CUERPO ::= CUERPO identificador guion mayor EXPRESION ptyComa 
             {
               String RESULT =null;
 		int cleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
@@ -333,18 +370,6 @@ class CUP$parser$actions {
                 idHoja = 1;
             
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // CUERPO ::= conj dosPts identificador guion mayor CONJNOTACION ptyComa 
-            {
-              String RESULT =null;
-		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
@@ -379,7 +404,10 @@ class CUP$parser$actions {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String b = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-
+		
+                    conjNotacion1[0] = a;
+                    conjNotacion1[1] = b;
+                 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CONJNOTACION",3, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -388,9 +416,9 @@ class CUP$parser$actions {
           case 7: // CONJNOTACION ::= LISTASIMBOLOS 
             {
               String RESULT =null;
-		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
-		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		String b = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CONJNOTACION",3, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -403,7 +431,10 @@ class CUP$parser$actions {
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
-
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		String b = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		conjNotacion2.add(b);
               CUP$parser$result = parser.getSymbolFactory().newSymbol("LISTASIMBOLOS",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -415,7 +446,7 @@ class CUP$parser$actions {
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-
+		conjNotacion2.add(a);
               CUP$parser$result = parser.getSymbolFactory().newSymbol("LISTASIMBOLOS",4, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;

@@ -15,7 +15,7 @@ import java_cup.runtime.Symbol;
 %init} 
 
 
-comentario = ("//"[^.]*\n)|("//"[^.]*\r)
+comentario = ("//"(.|\'|\")*(\n|\r))
 comentarioMultiple = ("<""!"[^.]*"!"">")
 simbolo = (("\""[^\"]*"\"")|"\\""n"|"\\""\'"|"\\""\"")
 entero = [0-9]+

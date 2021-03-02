@@ -2,7 +2,10 @@ package analizadores;
 import java_cup.runtime.*;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import compi1_proyecto1.AppState;
+import compi1_proyecto1.Conjunto;
 import compi1_proyecto1.Nodo;
 
 parser code 
@@ -11,6 +14,9 @@ parser code
     public static HashMap<String, String> hojas = new HashMap<>();
     public static int contador = 0;
     public static int idHoja = 1;
+
+    public static String[] conjNotacion1 = new String[2];
+    public static List<String> conjNotacion2 = new ArrayList<>();
 
     //Codigo para Errores Sintacticos
     public void syntax_error(Symbol s){ 
@@ -40,7 +46,28 @@ precedence left parentesisA, parentesisC;
 start with INICIO; 
 INICIO::= llaveA CUERPO:a porcentaje porcentaje porcentaje porcentaje  EVALUACIONES:b llaveC;    
 
-CUERPO  ::= CUERPO:c conj dosPts identificador guion mayor CONJNOTACION:a ptyComa
+CUERPO  ::= CUERPO conj dosPts identificador:a guion mayor CONJNOTACION:b ptyComa
+            {:
+                if (conjNotacion2.size() != 0) {
+                   AppState.conjuntos.add(new Conjunto(a,conjNotacion2));
+                   conjNotacion2 = new ArrayList<>();
+                } else {
+                   AppState.conjuntos.add(new Conjunto(a,conjNotacion1));
+                   conjNotacion1 = new String[2];
+                }
+            :}
+
+            |conj dosPts identificador:a guion mayor CONJNOTACION:b ptyComa
+            {:
+                if (conjNotacion2.size() != 0) {
+                   AppState.conjuntos.add(new Conjunto(a,conjNotacion2));
+                   conjNotacion2 = new ArrayList<>();
+                } else {
+                   AppState.conjuntos.add(new Conjunto(a,conjNotacion1));
+                   conjNotacion1 = new String[2];
+                }
+            :}
+
             |CUERPO:c identificador guion mayor EXPRESION:a ptyComa
             {: 
                 Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
@@ -52,8 +79,6 @@ CUERPO  ::= CUERPO:c conj dosPts identificador guion mayor CONJNOTACION:a ptyCom
                 contador = 0;
                 idHoja = 1;
             :}
-
-            |conj dosPts identificador guion mayor CONJNOTACION:a ptyComa
             |identificador guion mayor EXPRESION:a ptyComa  
             {: 
                 Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
@@ -68,11 +93,16 @@ CUERPO  ::= CUERPO:c conj dosPts identificador guion mayor CONJNOTACION:a ptyCom
 
 ;
 
-CONJNOTACION ::= SIMBOLO:a colocho SIMBOLO:b
-            |LISTASIMBOLOS:b
+CONJNOTACION ::= SIMBOLO:a colocho SIMBOLO:b   
+                 {:
+                    conjNotacion1[0] = a;
+                    conjNotacion1[1] = b;
+                 :}
+                |LISTASIMBOLOS:a
+                
 ;
-LISTASIMBOLOS ::= LISTASIMBOLOS:a coma SIMBOLO
-                  |SIMBOLO:a
+LISTASIMBOLOS ::= LISTASIMBOLOS:a coma SIMBOLO:b    {:conjNotacion2.add(b);:}
+                  |SIMBOLO:a                        {:conjNotacion2.add(a);:}
 ;
 
 EXPRESION ::= punto EXPRESION:a EXPRESION:b  {:RESULT=new Nodo("H" + contador, ".", a, b); contador++;:}
