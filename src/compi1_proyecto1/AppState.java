@@ -51,6 +51,7 @@ public class AppState {
     }
 
     public static void crearTablasdeSiguientes() {
+        vaciarCarpeta(new File("./tablasdeSiguientes"));
         int contador = 0;
         for (Nodo arbol : arboles) {
             tablasdeSiguientes.add(new TabladeSiguientes(arbol, hojas.get(contador)));
@@ -59,6 +60,7 @@ public class AppState {
     }
 
     public static void graficarTablasdeSiguientes() throws InterruptedException {
+        vaciarCarpeta(new File("./tabladeTransiciones"));
         for (int i = 0; i < tablasdeSiguientes.size(); i++) {
             String nombre = "tablaSiguientes_" + i;
             tablasdeSiguientes.get(i).graficar(nombre);
@@ -92,6 +94,14 @@ public class AppState {
             TablaTransiciones tabla = tablasdeTransiciones.get(i);
             HashMap<String, String> terminales = hojas.get(i);
             automatas.add(new Automata(tabla, terminales));
+        }
+    }
+    
+    public static void graficarAutomatas() throws InterruptedException {
+        vaciarCarpeta(new File("./automatas"));
+        for (int i = 0; i < automatas.size(); i++) {
+            String nombre = "automata_" + i;
+            automatas.get(i).graficar(nombre);
         }
     }
 

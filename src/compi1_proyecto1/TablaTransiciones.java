@@ -1,5 +1,6 @@
 package compi1_proyecto1;
 
+import static compi1_proyecto1.AppState.vaciarCarpeta;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
