@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import compi1_proyecto1.AppState;
 import compi1_proyecto1.Conjunto;
+import compi1_proyecto1.Evaluacion;
 import compi1_proyecto1.Nodo;
 
 parser code 
@@ -119,7 +120,7 @@ EXPRESION ::= punto EXPRESION:a EXPRESION:b  {:RESULT=new Nodo("H" + contador, "
               |simbolo:a
               {:
                 RESULT=new Nodo(idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
-                hojas.put(idHoja + "", a); 
+                hojas.put(idHoja + "", a.replace("\"", "")); 
                 idHoja++;
               :}
 ;
@@ -157,6 +158,6 @@ SIMBOLO ::= admiracion:a {:RESULT=a;:}
     |simbolo:a           {:RESULT=a;:}
 ; 
 
-EVALUACIONES ::= EVALUACIONES:a identificador dosPts simbolo ptyComa
-                 |identificador dosPts simbolo ptyComa
+EVALUACIONES ::= EVALUACIONES identificador:a dosPts simbolo:b ptyComa {:AppState.evaluaciones.add(new Evaluacion(a,b));:}
+                 |identificador:a dosPts simbolo:b ptyComa             {:AppState.evaluaciones.add(new Evaluacion(a,b));:}
 ;

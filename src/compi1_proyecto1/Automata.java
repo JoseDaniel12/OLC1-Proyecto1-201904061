@@ -75,4 +75,77 @@ public class Automata {
             System.out.println("error, no se realizo el archivo");
         }
     }
+
+    public ArrayList<ArrayList<String>> findWays(String valorActual, String estadoActual, List<List<String>> transiciones, String cadena) {
+        ArrayList<ArrayList<String>> ways = new ArrayList<>();
+        String transicionApuntadora = estadoActual;
+        for (List<String> transicion : transiciones) {
+            if (transicionApuntadora.equals(transicion.get(0))) {
+                boolean bandera = true;
+                for (Conjunto conj : AppState.conjuntos) {
+                    if (conj.nombre.equals(transicion.get(1))) {
+                        bandera = false;
+                        for (String elemento : conj.elementos) {
+                            String nuevoEstadoAnterior = estadoActual;
+                            String nuevoValorActual = valorActual + "" + elemento;
+                            String nuevoEstadoActual = transicion.get(2);
+                            ArrayList<String> lista = new ArrayList<String>();
+                            lista.add(nuevoEstadoAnterior);
+                            lista.add(nuevoValorActual);
+                            lista.add(nuevoEstadoActual);
+                            if (cadena.contains(nuevoValorActual)) {
+                                ways.add(lista);
+                            }
+                        }
+                    }
+                }
+
+                if (bandera) {
+                    String nuevoEstadoAnterior = estadoActual;
+                    String nuevoValorActual = valorActual + "" + transicion.get(1);
+                    String nuevoEstadoActual = transicion.get(2);
+                    ArrayList<String> lista = new ArrayList<String>();
+                    lista.add(nuevoEstadoAnterior);
+                    lista.add(nuevoValorActual);
+                    lista.add(nuevoEstadoActual);
+                    if (cadena.contains(nuevoValorActual)) {
+                        ways.add(lista);
+                    }
+                }
+            }
+        }
+        return ways;
+    }
+
+    public boolean validarCadena(String cadena) {
+        String estadoAnterior = this.inicio;
+        String valorActual = "";
+        String estadoActual = this.inicio;
+        ArrayList<ArrayList<ArrayList<String>>> caminos = new ArrayList<ArrayList<ArrayList<String>>>();
+        ArrayList<String> lista1 = new ArrayList<>();
+        lista1.add(estadoAnterior);
+        lista1.add(valorActual);
+        lista1.add(estadoActual);
+        ArrayList<ArrayList<String>> lista2 = new ArrayList<>();
+        lista2.add(lista1);
+        caminos.add(lista2);
+        for (int nProfundiad = 0; nProfundiad < cadena.length(); nProfundiad++) {
+            ArrayList<ArrayList<String>> nivel = new ArrayList<>();
+            ArrayList<ArrayList<String>> ultimoNivel = caminos.get(caminos.size() - 1);
+            for (ArrayList<String> nodo : ultimoNivel) {
+                valorActual = nodo.get(1);
+                estadoActual = nodo.get(2);
+                nivel.addAll(this.findWays(valorActual, estadoActual, this.transiciones, cadena));
+            }
+            caminos.add(nivel);
+        }
+        for (ArrayList<String> nodo : caminos.get(caminos.size() - 1)) {
+            if (cadena.length() > 0) {
+                if (cadena.equals(nodo.get(1)) && this.estadosAceptacion.contains(nodo.get(2))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

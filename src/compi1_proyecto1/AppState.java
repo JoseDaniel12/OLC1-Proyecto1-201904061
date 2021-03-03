@@ -18,6 +18,7 @@ public class AppState {
     public static List<HashMap<String, String>> hojas = new ArrayList<>();
     public static List<Nodo> arboles = new ArrayList<>();
     public static List<Conjunto> conjuntos = new ArrayList<>();
+    public static List<Evaluacion> evaluaciones = new ArrayList<>();
     public static ArrayList<TabladeSiguientes> tablasdeSiguientes = new ArrayList<>();
     public static ArrayList<TablaTransiciones> tablasdeTransiciones = new ArrayList<>();
     public static ArrayList<Automata> automatas = new ArrayList<>();
@@ -72,14 +73,6 @@ public class AppState {
             Nodo arbol = arboles.get(i);
             tablasdeTransiciones.add(new TablaTransiciones(arbol, hojas.get(i), tablasdeSiguientes.get(i)));
         }
-        /*
-         for (TablaTransiciones t : tablasdeTransiciones) {
-         for (FilaTransiciones fila : t.filas) {
-         System.out.println(fila.estdoId + fila.elemntosEstado.toString() + " -> " +  fila.transiciones);
-         }
-         System.out.println("------------");
-         }
-         */
     }
 
     public static void graficarTablasdeTransiciones() throws InterruptedException {
@@ -109,6 +102,14 @@ public class AppState {
         if (ruta.isDirectory()) {
             for (File f : ruta.listFiles()) {
                 f.delete();
+            }
+        }
+    }
+    
+    public static void validarCadenas() {
+        for (Evaluacion ev : evaluaciones) {
+            for (Conjunto conj : conjuntos) {
+                
             }
         }
     }

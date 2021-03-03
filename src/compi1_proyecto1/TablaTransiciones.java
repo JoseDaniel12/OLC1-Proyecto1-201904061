@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- *
  * @author José Alvarado
  */
 class FilaTransiciones {
