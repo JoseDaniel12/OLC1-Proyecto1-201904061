@@ -46,7 +46,13 @@ public class Thomson {
                 return interrogacion(codigoInterno(raiz.hizq));
             } else {
                 contador++;
-                texto += "nodo" + (contador) + " -> " + "nodo" + (contador + 1) + "[ label = \"" + raiz.valor + "\" ]\n";
+                if ("#".equals(raiz.valor)) {
+                    texto += "S" + (contador+1) + " [shape = doublecircle]";
+                    texto += "S" + (contador) + " -> " + "S" + (contador + 1) + "[ label = \"" + raiz.valor + "\" ]\n";
+                } else {
+                    texto += "S" + (contador) + " -> " + "S" + (contador + 1) + "[ label = \"" + raiz.valor + "\" ]\n";
+                }
+
                 res[0] = contador;
                 res[1] = contador + 1;
                 contador++;
@@ -59,10 +65,10 @@ public class Thomson {
     public static int[] asterisco(int[] p1) {
         int[] res = new int[2];
         contador++;
-        texto += "nodo" + (contador) + " -> " + "nodo" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (p1[1]) + " -> " + "nodo" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (p1[1]) + " -> " + "nodo" + (contador + 1) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (contador) + " -> " + "nodo" + (contador + 1) + "[ label = \"ε\" ]\n";
+        texto += "S" + (contador) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
+        texto += "S" + (contador) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
         contador += 1;
         res[0] = contador - 1;
         res[1] = contador;
@@ -72,9 +78,9 @@ public class Thomson {
     public static int[] mas(int[] p1) {
         int[] res = new int[2];
         contador++;
-        texto += "nodo" + (contador) + " -> " + "nodo" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (p1[1]) + " -> " + "nodo" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (p1[1]) + " -> " + "nodo" + (contador + 1) + "[ label = \"ε\" ]\n";
+        texto += "S" + (contador) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
         contador += 1;
         res[0] = contador - 1;
         res[1] = contador;
@@ -84,9 +90,9 @@ public class Thomson {
     public static int[] interrogacion(int[] p1) {
         int[] res = new int[2];
         contador++;
-        texto += "nodo" + (contador) + " -> " + "nodo" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (p1[1]) + " -> " + "nodo" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (p1[1]) + " -> " + "nodo" + (contador + 1) + "[ label = \"ε\" ]\n";
+        texto += "S" + (contador) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
         contador += 1;
         res[0] = contador - 1;
         res[1] = contador;
@@ -95,7 +101,7 @@ public class Thomson {
 
     public static int[] punto(int[] p1, int[] p2) {
         int[] res = new int[2];
-        texto += "nodo" + (p1[1]) + " -> " + "nodo" + (p2[0]) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (p2[0]) + "[ label = \"ε\" ]\n";
         res[0] = p1[0];
         res[1] = p2[1];
         return res;
@@ -104,10 +110,10 @@ public class Thomson {
     public static int[] or(int[] p1, int[] p2) {
         int[] res = new int[2];
         contador++;
-        texto += "nodo" + (contador) + " -> " + "nodo" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (contador) + " -> " + "nodo" + (p2[0]) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (p1[1]) + " -> " + "nodo" + (contador + 1) + "[ label = \"ε\" ]\n";
-        texto += "nodo" + (p2[1]) + " -> " + "nodo" + (contador + 1) + "[ label = \"ε\" ]\n";
+        texto += "S" + (contador) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
+        texto += "S" + (contador) + " -> " + "S" + (p2[0]) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p2[1]) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
         res[0] = contador;
         res[1] = contador += 1;
         contador++;

@@ -34,9 +34,9 @@ import javax.swing.JOptionPane;
  *
  * @author José Alvarado
  */
-public class Prueba extends javax.swing.JFrame {
+public class Pantalla extends javax.swing.JFrame {
 
-    public Prueba() {
+    public Pantalla() {
         initComponents();
         CmbxArchivo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -68,7 +68,7 @@ public class Prueba extends javax.swing.JFrame {
             String ruta = "./" + CmbxReporte.getSelectedItem().toString() + "/" + CmbxElemento.getSelectedItem().toString() + ".jpg";
             //ImageIcon imagen = new ImageIcon(ruta);
             Image imagen = new ImageIcon(ruta).getImage();
-            ImageIcon img = new ImageIcon(imagen.getScaledInstance(600, 400, Image.SCALE_SMOOTH));
+            ImageIcon img = new ImageIcon(imagen.getScaledInstance(Display.getWidth(), Display.getHeight(), Image.SCALE_SMOOTH));
             Display.setIcon(img);
         } catch (Exception e) {
 
@@ -271,9 +271,9 @@ public class Prueba extends javax.swing.JFrame {
             try {
                 AppState.graficarThomson();
             } catch (IOException ex) {
-                Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
             }
             AppState.crearTablasdeSiguientes();
             AppState.graficarTablasdeSiguientes();
@@ -287,7 +287,7 @@ public class Prueba extends javax.swing.JFrame {
             try {
                 AppState.validarCadenas();
             } catch (IOException ex) {
-                Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
             }
             for (Nodo arbol : AppState.arboles) {
                 CmbxElemento.addItem(arbol.nombre);
@@ -316,20 +316,21 @@ public class Prueba extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Prueba.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Prueba.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Prueba.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Prueba.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Prueba().setVisible(true);
+                new Pantalla().setVisible(true);
             }
         });
     }

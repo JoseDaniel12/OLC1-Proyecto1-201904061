@@ -15,6 +15,7 @@ import java.util.List;
  * @author José Alvarado
  */
 class FilaSiguientes {
+
     String hojaValor = "";
     String id = "";
     List<String> siguientes = new ArrayList<>();
@@ -31,15 +32,27 @@ class FilaSiguientes {
 }
 
 public class TabladeSiguientes {
+
     String nombre = "";
     public List<FilaSiguientes> filas = new ArrayList<>();
 
-    public TabladeSiguientes(Nodo arbol, HashMap<String, String>  hojas) {
+    public TabladeSiguientes(Nodo arbol, HashMap<String, String> hojas) {
         this.nombre = arbol.nombre;
         crearTabladeSiguientes(arbol, hojas);
+        List<FilaSiguientes> ordenado = new ArrayList<>();
+        FilaSiguientes temp;
+        for (int a = 0; a < this.filas.size(); a++) {
+            for (int i = 0; i < this.filas.size() - 1; i++) {
+                if (Integer.parseInt(this.filas.get(i).id) > Integer.parseInt(this.filas.get(i + 1).id)) {
+                    temp = this.filas.get(i);
+                    this.filas.set(i, this.filas.get(i + 1));
+                    this.filas.set(i+1, temp);
+                }
+            }
+        }
     }
 
-    public void crearTabladeSiguientes(Nodo raiz, HashMap<String, String>  hojas) {
+    public void crearTabladeSiguientes(Nodo raiz, HashMap<String, String> hojas) {
         Nodo c1 = null;
         Nodo c2 = null;
         if (raiz == null) {
@@ -83,7 +96,7 @@ public class TabladeSiguientes {
 
     public void graficar() throws InterruptedException {
         String nombre = this.nombre;
-        filas.add(new FilaSiguientes ("#",(filas.size()+1) + "",  Arrays.asList("--")));
+        filas.add(new FilaSiguientes("#", (filas.size() + 1) + "", Arrays.asList("--")));
         FileWriter fw;
         PrintWriter pw;
         try {

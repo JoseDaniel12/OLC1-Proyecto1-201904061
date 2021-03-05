@@ -120,7 +120,7 @@ public class AppState {
                     json += "\t\t\"Valor\":" + "\"" + ev.lexema + "\",\n";
                     json += "\t\t\"ExpresionRegular\":" + "\"" + ev.nombre + "\",\n";
 
-                    String texto = Prueba.Consola.getText() + "\n";
+                    String texto = Pantalla.Consola.getText() + "\n";
                     texto += "La expresion: " + ev.lexema + ", es ";
                     if (atm.validarCadena(ev.lexema)) {
                         texto += "valida con  la expresion regular: " + ev.nombre + ".\n";
@@ -129,7 +129,7 @@ public class AppState {
                         texto += "No valida con  la expresion regular: " + ev.nombre + ".\n";
                         json += "\t\t\"Resultado\":" + "\"Cadena No Válida\",\n";
                     }
-                    Prueba.Consola.setText(texto);
+                    Pantalla.Consola.setText(texto);
                 }
             }
             json += "\t},\n";
