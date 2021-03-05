@@ -25,13 +25,17 @@ import javax.swing.JFileChooser;
 import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import analizadores.*;
-
+import java.awt.Image;
+import java.nio.file.FileSystems;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author José Alvarado
  */
 public class Prueba extends javax.swing.JFrame {
+
     public Prueba() {
         initComponents();
         CmbxArchivo.addActionListener(new ActionListener() {
@@ -39,13 +43,37 @@ public class Prueba extends javax.swing.JFrame {
                 try {
                     procesarOpcionDeArchivo(CmbxArchivo.getSelectedItem().toString());
                 } catch (IOException ex) {
-                    Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
+
+        CmbxReporte.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostrarImagen();
+            }
+        });
+
+        CmbxElemento.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostrarImagen();
+            }
+        });
+
     }
 
     @SuppressWarnings("unchecked")
+
+    private void mostrarImagen() {
+        try {
+            String ruta = "./" + CmbxReporte.getSelectedItem().toString() + "/" + CmbxElemento.getSelectedItem().toString() + ".jpg";
+            //ImageIcon imagen = new ImageIcon(ruta);
+            Image imagen = new ImageIcon(ruta).getImage();
+            ImageIcon img = new ImageIcon(imagen.getScaledInstance(600, 400, Image.SCALE_SMOOTH));
+            Display.setIcon(img);
+        } catch (Exception e) {
+
+        }
+    }
 
     private void procesarOpcionDeArchivo(String opcion) throws IOException {
         switch (opcion) {
@@ -69,21 +97,32 @@ public class Prueba extends javax.swing.JFrame {
                 break;
             case "Guardar":
                 AppState.texto = Texto.getText();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(AppState.filePath));
-                bw.write(AppState.texto);
-                bw.close();
+                if (AppState.filePath != null) {
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(AppState.filePath));
+                    bw.write(AppState.texto);
+                    bw.close();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debes \"Guardar Como\" el archivo y luego abrirlo para guardar.");
+                }
                 break;
             case "Guardar como":
                 fileChooser = new JFileChooser();
                 fileChooser.showSaveDialog(this);
-                File nombre =fileChooser.getSelectedFile();
+                File nombre = fileChooser.getSelectedFile();
                 if (nombre != null) {
                     FileWriter archivo = new FileWriter(nombre + ".olc");
                     archivo.write(Texto.getText());
                     archivo.close();
-                    File fichero = new File(AppState.filePath.toString());
-                    fichero.delete();
-                    AppState.filePath = Paths.get(nombre.getPath() + ".olc").toFile();
+                    if (AppState.filePath != null) {
+                        File fichero = new File(AppState.filePath.toString());
+                        fichero.delete();
+                        AppState.filePath = Paths.get(nombre.getPath() + ".olc").toFile();
+                    } else {
+                        AppState.texto = Texto.getText();
+                        BufferedWriter bw = new BufferedWriter(new FileWriter(nombre.getPath()));
+                        bw.write(AppState.texto);
+                        bw.close();
+                    }
                 }
 
                 break;
@@ -94,7 +133,9 @@ public class Prueba extends javax.swing.JFrame {
         CmbxArchivo.setSelectedItem("Archivo");
 
     }
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
         CmbxArchivo = new javax.swing.JComboBox();
@@ -104,16 +145,15 @@ public class Prueba extends javax.swing.JFrame {
         Texto = new javax.swing.JTextArea();
         BtnAnalizarEntradas = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        CmbxImagenes = new javax.swing.JComboBox();
-        BtnAnterior = new javax.swing.JButton();
+        CmbxElemento = new javax.swing.JComboBox();
         Display = new javax.swing.JLabel();
-        BtnSIguiente = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        TreeCarpetas = new javax.swing.JTree();
+        LblNombre = new javax.swing.JLabel();
+        CmbxReporte = new javax.swing.JComboBox();
+        LblNombre1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        CmbxArchivo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Archivo", "Abrir", "Guardar", "Guardar como", "Generar XML de salida" }));
+        CmbxArchivo.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Archivo", "Abrir", "Guardar", "Guardar como"}));
         CmbxArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CmbxArchivoActionPerformed(evt);
@@ -137,108 +177,104 @@ public class Prueba extends javax.swing.JFrame {
 
         jLabel1.setText("Salida");
 
-        CmbxImagenes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ver Imagenes", "Siguientes", "Transiciones", "Automatas" }));
+        Display.setBackground(new java.awt.Color(0, 0, 0));
 
-        BtnAnterior.setText("Anterior");
-        BtnAnterior.addActionListener(new java.awt.event.ActionListener() {
+        LblNombre.setText("Reporte:");
+
+        CmbxReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"arboles", "tablasdeSiguientes", "tabladeTransiciones", "automatas", "thomson"}));
+        CmbxReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnAnteriorActionPerformed(evt);
+                CmbxReporteActionPerformed(evt);
             }
         });
 
-        BtnSIguiente.setText("Siguiente");
-        BtnSIguiente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnSIguienteActionPerformed(evt);
-            }
-        });
-
-        jScrollPane4.setViewportView(TreeCarpetas);
+        LblNombre1.setText("Elemento:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel1)
-                .addContainerGap(1040, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(CmbxArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                            .addComponent(BtnAnalizarEntradas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(BtnAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(BtnSIguiente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(CmbxImagenes, javax.swing.GroupLayout.Alignment.LEADING, 0, 500, Short.MAX_VALUE)
-                                    .addComponent(Display, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel1)
+                        .addContainerGap(1040, Short.MAX_VALUE))
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                                                        .addComponent(BtnAnalizarEntradas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addComponent(CmbxArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(Display, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(LblNombre)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(CmbxReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(LblNombre1)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(CmbxElemento, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(jScrollPane1)))
+                        .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(CmbxArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(BtnAnalizarEntradas)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(12, 12, 12)
+                                        .addComponent(CmbxArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(BtnAnalizarEntradas))
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(44, 44, 44)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(CmbxElemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(CmbxReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(LblNombre)
+                                                .addComponent(LblNombre1))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(Display, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(CmbxImagenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Display, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(BtnAnterior)
-                            .addComponent(BtnSIguiente))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
 
-    private void BtnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAnteriorActionPerformed
+    private void CmbxArchivoActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_BtnAnteriorActionPerformed
+    }
 
-    private void BtnSIguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSIguienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnSIguienteActionPerformed
-
-    private void CmbxArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CmbxArchivoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CmbxArchivoActionPerformed
-
-    private void BtnAnalizarEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAnalizarEntradasActionPerformed
+    private void BtnAnalizarEntradasActionPerformed(java.awt.event.ActionEvent evt) {
+        AppState.reiniciar();
+        Consola.setText("");
+        Display.setIcon(null);
+        CmbxElemento.removeAllItems();
         try {
             parser sintactico = new parser(new lexico(new StringReader(Texto.getText())));
             sintactico.parse();
+            AppState.reportar();
             AppState.graficarArboles();
+            try {
+                AppState.graficarThomson();
+            } catch (IOException ex) {
+                Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+            }
             AppState.crearTablasdeSiguientes();
             AppState.graficarTablasdeSiguientes();
             AppState.crearTablasdeTransiciones();
@@ -248,9 +284,20 @@ public class Prueba extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println(e);
         } finally {
-            AppState.validarCadenas();
+            try {
+                AppState.validarCadenas();
+            } catch (IOException ex) {
+                Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (Nodo arbol : AppState.arboles) {
+                CmbxElemento.addItem(arbol.nombre);
+            }
         }
-    }//GEN-LAST:event_BtnAnalizarEntradasActionPerformed
+    }
+
+    private void CmbxReporteActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
 
     /**
      * @param args the command line arguments
@@ -287,19 +334,18 @@ public class Prueba extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     private javax.swing.JButton BtnAnalizarEntradas;
-    private javax.swing.JButton BtnAnterior;
-    private javax.swing.JButton BtnSIguiente;
     private javax.swing.JComboBox CmbxArchivo;
-    private javax.swing.JComboBox CmbxImagenes;
-    private javax.swing.JTextArea Consola;
+    public static javax.swing.JComboBox CmbxElemento;
+    public static javax.swing.JComboBox CmbxReporte;
+    public static javax.swing.JTextArea Consola;
     private javax.swing.JLabel Display;
+    private javax.swing.JLabel LblNombre;
+    private javax.swing.JLabel LblNombre1;
     private javax.swing.JTextArea Texto;
-    private javax.swing.JTree TreeCarpetas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 }

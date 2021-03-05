@@ -13,7 +13,7 @@ import java.util.List;
  * @author José Alvarado
  */
 public class Automata {
-
+    String nombre = "";
     List<String> alfabeto = new ArrayList<>();
     String inicio = "S0";
     List<String> estados = new ArrayList<>();
@@ -21,6 +21,7 @@ public class Automata {
     List<List<String>> transiciones = new ArrayList<>();
 
     public Automata(TablaTransiciones tabla, HashMap<String, String> terminales) {
+        this.nombre = tabla.nombre;
         for (FilaTransiciones fila : tabla.filas) {
             if (!this.estados.contains(fila.estdoId)) {
                 this.estados.add(fila.estdoId);
@@ -45,7 +46,8 @@ public class Automata {
         }
     }
 
-    public void graficar(String nombre) throws InterruptedException {
+    public void graficar() throws InterruptedException {
+        String nombre = this.nombre;
         FileWriter fw;
         PrintWriter pw;
         try {
@@ -83,7 +85,7 @@ public class Automata {
             if (transicionApuntadora.equals(transicion.get(0))) {
                 boolean bandera = true;
                 for (Conjunto conj : AppState.conjuntos) {
-                    if (conj.nombre.equals(transicion.get(1))) {
+                    if (transicion.get(1).contains(conj.nombre)) {
                         bandera = false;
                         for (String elemento : conj.elementos) {
                             String nuevoEstadoAnterior = estadoActual;
@@ -137,7 +139,11 @@ public class Automata {
                 estadoActual = nodo.get(2);
                 nivel.addAll(this.findWays(valorActual, estadoActual, this.transiciones, cadena));
             }
-            caminos.add(nivel);
+            if (nivel.size() != 0) {
+                caminos.add(nivel);
+            } else {
+                return false;
+            }
         }
         for (ArrayList<String> nodo : caminos.get(caminos.size() - 1)) {
             if (cadena.length() > 0) {

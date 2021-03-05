@@ -9,6 +9,6 @@ public class Evaluacion {
 
     public Evaluacion(String nombre, String lexema) {
         this.nombre = nombre;
-        this.lexema = lexema;
+        this.lexema = lexema.substring(1, lexema.length()-1);
     } 
 }

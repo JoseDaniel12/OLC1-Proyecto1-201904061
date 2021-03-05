@@ -14,6 +14,7 @@ import compi1_proyecto1.AppState;
 import compi1_proyecto1.Conjunto;
 import compi1_proyecto1.Evaluacion;
 import compi1_proyecto1.Nodo;
+import compi1_proyecto1.Errorr;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -243,11 +244,23 @@ public class parser extends java_cup.runtime.lr_parser {
     //Codigo para Errores Sintacticos
     public void syntax_error(Symbol s){ 
         System.out.println("Error Sintactico en la Linea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+        Errorr errorr = new Errorr();
+        errorr.tipo = "Sintatico";
+        errorr.descripcion = "No se esperaba el componente: "+s.value;
+        errorr.linea = s.left + "";
+        errorr.columna = s.right + "";
+        AppState.errores.add(errorr);
     } 
 
     //Codigo para errores que ya no se pueden recuperar
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        System.out.println("Error sintactico irrecuperable en la Linea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido."); 
+        System.out.println("Error sintactico irrecuperable en la Linea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.");
+        Errorr errorr = new Errorr();
+        errorr.tipo = "Sintatico inrecuperable";
+        errorr.descripcion = "No se esperaba el componente: "+s.value;
+        errorr.linea = s.left + "";
+        errorr.columna = s.right + "";
+        AppState.errores.add(errorr); 
     }  
 
 
@@ -357,12 +370,15 @@ class CUP$parser$actions {
 		int cleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
 		String c = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
+		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
+		String i = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Nodo a = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		 
-                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
-                Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
+                Nodo hoja = new Nodo("",idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
+                Nodo raiz = new Nodo(i,"H" + contador, ".", a, hoja);
                 hojas.put(idHoja + "", "#");
                 AppState.arboles.add(raiz); 
                 AppState.hojas.add(hojas);
@@ -378,13 +394,16 @@ class CUP$parser$actions {
           case 5: // CUERPO ::= identificador guion mayor EXPRESION ptyComa 
             {
               String RESULT =null;
+		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
+		String i = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Nodo a = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		 
-                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
+                Nodo hoja = new Nodo("",idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
                 hojas.put(idHoja + "", "#");                
-                Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
+                Nodo raiz = new Nodo(i,"H" + contador, ".", a, hoja);
                 AppState.arboles.add(raiz); 
                 AppState.hojas.add(hojas);
                 hojas = new HashMap<>();
@@ -462,7 +481,7 @@ class CUP$parser$actions {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Nodo b = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		RESULT=new Nodo("H" + contador, ".", a, b); contador++;
+		RESULT=new Nodo("","H" + contador, ".", a, b); contador++;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -477,7 +496,7 @@ class CUP$parser$actions {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Nodo b = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		RESULT=new Nodo("H" + contador, "|", a, b); contador++;
+		RESULT=new Nodo("","H" + contador, "|", a, b); contador++;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -489,7 +508,7 @@ class CUP$parser$actions {
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Nodo a = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		RESULT=new Nodo("H" + contador, "*", a, null); contador++;
+		RESULT=new Nodo("","H" + contador, "*", a, null); contador++;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -501,7 +520,7 @@ class CUP$parser$actions {
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Nodo a = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		RESULT=new Nodo("H" + contador, "+", a, null); contador++;
+		RESULT=new Nodo("","H" + contador, "+", a, null); contador++;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -513,7 +532,7 @@ class CUP$parser$actions {
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Nodo a = (Nodo)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		RESULT=new Nodo("H" + contador, "?", a, null); contador++;
+		RESULT=new Nodo("","H" + contador, "?", a, null); contador++;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -526,7 +545,7 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
-                RESULT = new Nodo(idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);  
+                RESULT = new Nodo("",idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);  
                 hojas.put(idHoja + "", a); 
                 idHoja++;
               
@@ -542,7 +561,7 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                RESULT=new Nodo(idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
+                RESULT=new Nodo("",idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
                 hojas.put(idHoja + "", a.replace("\"", "")); 
                 idHoja++;
               

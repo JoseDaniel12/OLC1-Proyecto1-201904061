@@ -7,7 +7,7 @@ import java.util.List;
  * @author José Alvarado
  */
 public class Nodo {
-
+    String nombre = "";
     public String id;
     public String valor;
     public String anunabilidad;
@@ -16,7 +16,8 @@ public class Nodo {
     public Nodo hizq;
     public Nodo hder;
 
-    public Nodo(String id, String valor, String anunabilidad, List<String> firsts, List<String> lasts, Nodo hizq, Nodo hder) {
+    public Nodo(String nombre, String id, String valor, String anunabilidad, List<String> firsts, List<String> lasts, Nodo hizq, Nodo hder) {
+        this.nombre = nombre;
         this.id = id;
         this.valor = valor;
         this.anunabilidad = anunabilidad;
@@ -26,7 +27,8 @@ public class Nodo {
         this.hder = hder;
     }
 
-    public Nodo(String id, String valor, Nodo hizq, Nodo hder) {
+    public Nodo(String nombre, String id, String valor, Nodo hizq, Nodo hder) {
+        this.nombre = nombre;
         this.id = id;
         this.valor = valor;
         this.anunabilidad = "";

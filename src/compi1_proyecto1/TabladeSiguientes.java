@@ -15,7 +15,6 @@ import java.util.List;
  * @author José Alvarado
  */
 class FilaSiguientes {
-    
     String hojaValor = "";
     String id = "";
     List<String> siguientes = new ArrayList<>();
@@ -32,10 +31,11 @@ class FilaSiguientes {
 }
 
 public class TabladeSiguientes {
-
+    String nombre = "";
     public List<FilaSiguientes> filas = new ArrayList<>();
 
     public TabladeSiguientes(Nodo arbol, HashMap<String, String>  hojas) {
+        this.nombre = arbol.nombre;
         crearTabladeSiguientes(arbol, hojas);
     }
 
@@ -81,7 +81,8 @@ public class TabladeSiguientes {
         crearTabladeSiguientes(raiz.hder, hojas);
     }
 
-    public void graficar(String nombre) throws InterruptedException {
+    public void graficar() throws InterruptedException {
+        String nombre = this.nombre;
         filas.add(new FilaSiguientes ("#",(filas.size()+1) + "",  Arrays.asList("--")));
         FileWriter fw;
         PrintWriter pw;

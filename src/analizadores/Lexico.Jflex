@@ -1,5 +1,7 @@
 package analizadores;
 import java_cup.runtime.Symbol; 
+import compi1_proyecto1.AppState;
+import compi1_proyecto1.Errorr;
 
 %% 
 %class lexico
@@ -18,13 +20,14 @@ import java_cup.runtime.Symbol;
 comentario = ("//"(.|\'|\")*(\n|\r))
 comentarioMultiple = ("<""!"[^.]*"!"">")
 simbolo = (("\""[^\"]*"\"")|"\\""n"|"\\""\'"|"\\""\"")
-entero = [0-9]+
+entero = [0-9]
 letra = [a-zA-Z]
-identificador = {letra}({letra}|{entero}|"_")*
+identificador = ({letra}({letra}|{entero}|"_")*)
 BLANCOS = [\r\t nbsp]+
 
 
 %%
+"CONJ" {return new Symbol(sym.conj,yyline,yychar, yytext());}
 "!" {return new Symbol(sym.admiracion,yyline,yychar, yytext());}
 "#" {return new Symbol(sym.hash,yyline,yychar, yytext());}
 "$" {return new Symbol(sym.dollar,yyline,yychar, yytext());}
@@ -53,7 +56,6 @@ BLANCOS = [\r\t nbsp]+
 "}" {return new Symbol(sym.llaveC,yyline,yychar, yytext());}
 "~" {return new Symbol(sym.colocho,yyline,yychar, yytext());}
 "\\" {return new Symbol(sym.slashInverso,yyline,yychar, yytext());}
-"CONJ" {return new Symbol(sym.conj,yyline,yychar, yytext());}
 {entero} {return new Symbol(sym.entero,yyline,yychar, yytext());}  
 {letra} {return new Symbol(sym.letra,yyline,yychar, yytext());}
 {simbolo} {return new Symbol(sym.simbolo,yyline,yychar, yytext());}
@@ -65,4 +67,10 @@ BLANCOS = [\r\t nbsp]+
 
 . {
     System.out.println("Este es un error lexico: "+yytext()+", en la linea: "+yyline+", en la columna: "+yychar);
+    Errorr errorr = new Errorr();
+    errorr.tipo = "Léxico";
+    errorr.descripcion = "Este es un error lexico: "+yytext();
+    errorr.linea = yyline + "";
+    errorr.columna = yychar + "";
+    AppState.errores.add(errorr);
 }

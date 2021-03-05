@@ -8,6 +8,7 @@ import compi1_proyecto1.AppState;
 import compi1_proyecto1.Conjunto;
 import compi1_proyecto1.Evaluacion;
 import compi1_proyecto1.Nodo;
+import compi1_proyecto1.Errorr;
 
 parser code 
 {:
@@ -22,11 +23,23 @@ parser code
     //Codigo para Errores Sintacticos
     public void syntax_error(Symbol s){ 
         System.out.println("Error Sintactico en la Linea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+        Errorr errorr = new Errorr();
+        errorr.tipo = "Sintatico";
+        errorr.descripcion = "No se esperaba el componente: "+s.value;
+        errorr.linea = s.left + "";
+        errorr.columna = s.right + "";
+        AppState.errores.add(errorr);
     } 
 
     //Codigo para errores que ya no se pueden recuperar
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        System.out.println("Error sintactico irrecuperable en la Linea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido."); 
+        System.out.println("Error sintactico irrecuperable en la Linea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.");
+        Errorr errorr = new Errorr();
+        errorr.tipo = "Sintatico inrecuperable";
+        errorr.descripcion = "No se esperaba el componente: "+s.value;
+        errorr.linea = s.left + "";
+        errorr.columna = s.right + "";
+        AppState.errores.add(errorr); 
     }  
 :} 
 
@@ -43,11 +56,10 @@ precedence left punto;
 precedence left mas, asterisco, interrogacion;
 precedence left parentesisA, parentesisC;
 
-
 start with INICIO; 
 INICIO::= llaveA CUERPO:a porcentaje porcentaje porcentaje porcentaje  EVALUACIONES:b llaveC;    
 
-CUERPO  ::= CUERPO conj dosPts identificador:a guion mayor CONJNOTACION:b ptyComa
+CUERPO  ::= CUERPO conj dosPts identificador:a guion mayor CONJNOTACION:b ptyComa 
             {:
                 if (conjNotacion2.size() != 0) {
                    AppState.conjuntos.add(new Conjunto(a,conjNotacion2));
@@ -69,10 +81,10 @@ CUERPO  ::= CUERPO conj dosPts identificador:a guion mayor CONJNOTACION:b ptyCom
                 }
             :}
 
-            |CUERPO:c identificador guion mayor EXPRESION:a ptyComa
+            |CUERPO:c identificador:i guion mayor EXPRESION:a ptyComa
             {: 
-                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
-                Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
+                Nodo hoja = new Nodo("",idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
+                Nodo raiz = new Nodo(i,"H" + contador, ".", a, hoja);
                 hojas.put(idHoja + "", "#");
                 AppState.arboles.add(raiz); 
                 AppState.hojas.add(hojas);
@@ -80,11 +92,11 @@ CUERPO  ::= CUERPO conj dosPts identificador:a guion mayor CONJNOTACION:b ptyCom
                 contador = 0;
                 idHoja = 1;
             :}
-            |identificador guion mayor EXPRESION:a ptyComa  
+            |identificador:i guion mayor EXPRESION:a ptyComa  
             {: 
-                Nodo hoja = new Nodo(idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
+                Nodo hoja = new Nodo("",idHoja+ "", "#", "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);   
                 hojas.put(idHoja + "", "#");                
-                Nodo raiz = new Nodo("H" + contador, ".", a, hoja);
+                Nodo raiz = new Nodo(i,"H" + contador, ".", a, hoja);
                 AppState.arboles.add(raiz); 
                 AppState.hojas.add(hojas);
                 hojas = new HashMap<>();
@@ -106,20 +118,20 @@ LISTASIMBOLOS ::= LISTASIMBOLOS:a coma SIMBOLO:b    {:conjNotacion2.add(b);:}
                   |SIMBOLO:a                        {:conjNotacion2.add(a);:}
 ;
 
-EXPRESION ::= punto EXPRESION:a EXPRESION:b  {:RESULT=new Nodo("H" + contador, ".", a, b); contador++;:}
-              |or EXPRESION:a EXPRESION:b    {:RESULT=new Nodo("H" + contador, "|", a, b); contador++;:}
-              |asterisco EXPRESION:a         {:RESULT=new Nodo("H" + contador, "*", a, null); contador++;:}
-              |mas EXPRESION:a               {:RESULT=new Nodo("H" + contador, "+", a, null); contador++;:}
-              |interrogacion EXPRESION:a     {:RESULT=new Nodo("H" + contador, "?", a, null); contador++;:}
+EXPRESION ::= punto EXPRESION:a EXPRESION:b  {:RESULT=new Nodo("","H" + contador, ".", a, b); contador++;:}
+              |or EXPRESION:a EXPRESION:b    {:RESULT=new Nodo("","H" + contador, "|", a, b); contador++;:}
+              |asterisco EXPRESION:a         {:RESULT=new Nodo("","H" + contador, "*", a, null); contador++;:}
+              |mas EXPRESION:a               {:RESULT=new Nodo("","H" + contador, "+", a, null); contador++;:}
+              |interrogacion EXPRESION:a     {:RESULT=new Nodo("","H" + contador, "?", a, null); contador++;:}
               |llaveA identificador:a llaveC 
               {:
-                RESULT = new Nodo(idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);  
+                RESULT = new Nodo("",idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);  
                 hojas.put(idHoja + "", a); 
                 idHoja++;
               :}
               |simbolo:a
               {:
-                RESULT=new Nodo(idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
+                RESULT=new Nodo("",idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
                 hojas.put(idHoja + "", a.replace("\"", "")); 
                 idHoja++;
               :}

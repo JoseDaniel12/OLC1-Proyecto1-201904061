@@ -14,7 +14,6 @@ import java.util.List;
  * @author José Alvarado
  */
 class FilaTransiciones {
-
     String estdoId = "";
     List<String> elemntosEstado = new ArrayList<>();
     HashMap<String, String> transiciones = new HashMap<>();
@@ -24,7 +23,7 @@ class FilaTransiciones {
 }
 
 public class TablaTransiciones {
-
+    String nombre = "";
     HashMap<String, String> terminales = new HashMap<>();
     TabladeSiguientes tablaSiguientes = null;
     int contadorEstados = 1;
@@ -32,6 +31,7 @@ public class TablaTransiciones {
     List<FilaTransiciones> filas = new ArrayList<>();
 
     public TablaTransiciones(Nodo raiz, HashMap<String, String> terminales, TabladeSiguientes tablaSiguientes) {
+        this.nombre = raiz.nombre;
         this.tablaSiguientes = tablaSiguientes;
         this.terminales = terminales;
         this.contadorEstados = 1;
@@ -101,7 +101,8 @@ public class TablaTransiciones {
         return -1;
     }
 
-    public void graficar(String nombre) throws InterruptedException {
+    public void graficar() throws InterruptedException {
+        String nombre = this.nombre;
         FileWriter fw;
         PrintWriter pw;
         try {

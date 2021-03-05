@@ -22,6 +22,7 @@ public class AppState {
     public static ArrayList<TabladeSiguientes> tablasdeSiguientes = new ArrayList<>();
     public static ArrayList<TablaTransiciones> tablasdeTransiciones = new ArrayList<>();
     public static ArrayList<Automata> automatas = new ArrayList<>();
+    public static ArrayList<Errorr> errores = new ArrayList<>();
 
     public static void graficarArboles() {
         vaciarCarpeta(new File("./arboles"));
@@ -29,7 +30,7 @@ public class AppState {
         PrintWriter pw;
         for (int i = 0; i < arboles.size(); i++) {
             Nodo arbol = arboles.get(i);
-            String nombre = "arbol_" + i;
+            String nombre = arbol.nombre;
             try {
                 fw = new FileWriter("./" + nombre + ".dot");
                 pw = new PrintWriter(fw);
@@ -41,13 +42,20 @@ public class AppState {
                 pw.println("}");
                 fw.close();
                 Runtime rt = Runtime.getRuntime();
-                Process proc = rt.exec("dot -Ttiff " + nombre + ".dot -o ./arboles/" + nombre + ".jpg");
+                Process proc = rt.exec("dot -Tjpg " + nombre + ".dot -o ./arboles/" + nombre + ".jpg");
                 int exitVal = proc.waitFor();
                 File f = new File(nombre + ".dot");
                 f.delete();
             } catch (IOException | InterruptedException e) {
                 System.out.println("error, no se realizo el archivo");
             }
+        }
+    }
+    
+    public static void graficarThomson() throws IOException, InterruptedException {
+        vaciarCarpeta(new File("./thomson"));
+        for (Nodo arbol : arboles) {
+           Thomson.graficar(arbol);
         }
     }
 
@@ -63,8 +71,7 @@ public class AppState {
     public static void graficarTablasdeSiguientes() throws InterruptedException {
         vaciarCarpeta(new File("./tabladeTransiciones"));
         for (int i = 0; i < tablasdeSiguientes.size(); i++) {
-            String nombre = "tablaSiguientes_" + i;
-            tablasdeSiguientes.get(i).graficar(nombre);
+            tablasdeSiguientes.get(i).graficar();
         }
     }
 
@@ -77,8 +84,7 @@ public class AppState {
 
     public static void graficarTablasdeTransiciones() throws InterruptedException {
         for (int i = 0; i < tablasdeTransiciones.size(); i++) {
-            String nombre = "tablaTransiciones_" + i;
-            tablasdeTransiciones.get(i).graficar(nombre);
+            tablasdeTransiciones.get(i).graficar();
         }
     }
 
@@ -89,12 +95,11 @@ public class AppState {
             automatas.add(new Automata(tabla, terminales));
         }
     }
-    
+
     public static void graficarAutomatas() throws InterruptedException {
         vaciarCarpeta(new File("./automatas"));
         for (int i = 0; i < automatas.size(); i++) {
-            String nombre = "automata_" + i;
-            automatas.get(i).graficar(nombre);
+            automatas.get(i).graficar();
         }
     }
 
@@ -105,12 +110,71 @@ public class AppState {
             }
         }
     }
-    
-    public static void validarCadenas() {
+
+    public static void validarCadenas() throws IOException {
+        String json = "[ \n";
         for (Evaluacion ev : evaluaciones) {
-            for (Conjunto conj : conjuntos) {
-                
+            json += "\t{\n";
+            for (Automata atm : automatas) {
+                if (ev.nombre.contains(atm.nombre) || atm.nombre.contains(ev.nombre) || ev.nombre.equalsIgnoreCase(atm.nombre)) {
+                    json += "\t\t\"Valor\":" + "\"" + ev.lexema + "\",\n";
+                    json += "\t\t\"ExpresionRegular\":" + "\"" + ev.nombre + "\",\n";
+
+                    String texto = Prueba.Consola.getText() + "\n";
+                    texto += "La expresion: " + ev.lexema + ", es ";
+                    if (atm.validarCadena(ev.lexema)) {
+                        texto += "valida con  la expresion regular: " + ev.nombre + ".\n";
+                        json += "\t\t\"Resultado\":" + "\"Cadena Válida\",\n";
+                    } else {
+                        texto += "No valida con  la expresion regular: " + ev.nombre + ".\n";
+                        json += "\t\t\"Resultado\":" + "\"Cadena No Válida\",\n";
+                    }
+                    Prueba.Consola.setText(texto);
+                }
             }
+            json += "\t},\n";
         }
+        json += "]";
+        FileWriter archivo = new FileWriter("./json.json");
+        archivo.write(json);
+        archivo.close();
+    }
+    
+    public static void reportar() throws IOException {
+        String texto = "<table>\n";
+        texto += "\t<tr>\n";
+        texto += "\t\t<td>#</td>\n";
+        texto += "\t\t<td>Tipo de Error</td>\n";
+        texto += "\t\t<td>Descripcion</td>\n";
+        texto += "\t\t<td>Linea</td>\n";
+        texto += "\t\t<td>Columna</td>\n";
+        texto += "\t</td>";
+        int contador  = 0;
+        for (Errorr errorr : errores) {
+            texto+= "\t<tr>\n";
+            texto+= "\t\t<td>" + (contador++) +  "</td>\n";
+            texto+= "\t\t<td>" + errorr.tipo +  "</td>\n";
+            texto+= "\t\t<td>" + errorr.descripcion +  "</td>\n";
+            texto+= "\t\t<td>" + errorr.linea +  "</td>\n";
+            texto+= "\t\t<td>" + errorr.columna +  "</td>\n";
+            texto+= "\t</td>";
+        }
+        texto += "</table>";
+        FileWriter archivo = new FileWriter("./Reporte de Eerrores.html");
+        archivo.write(texto);
+        archivo.close();
+    }
+
+    public static void reiniciar() {
+        filePath = null;
+        texto = "";
+        hojas = new ArrayList<>();
+        arboles = new ArrayList<>();
+        conjuntos = new ArrayList<>();
+        evaluaciones = new ArrayList<>();
+        tablasdeSiguientes = new ArrayList<>();
+        tablasdeTransiciones = new ArrayList<>();
+        automatas = new ArrayList<>();
+        errores = new ArrayList<>();
     }
 }
