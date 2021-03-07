@@ -1,2 +1,0 @@
-compi1_proyecto1.FilaSiguientes
-compi1_proyecto1.TabladeSiguientes

@@ -1,2 +1,0 @@
-compi1_proyecto1.TablaTransiciones
-compi1_proyecto1.FilaTransiciones
