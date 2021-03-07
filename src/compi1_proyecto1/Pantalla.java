@@ -64,8 +64,27 @@ public class Pantalla extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
 
     private void mostrarImagen() {
+        String ruta = "";
         try {
-            String ruta = "./" + CmbxReporte.getSelectedItem().toString() + "/" + CmbxElemento.getSelectedItem().toString() + ".jpg";
+            switch (CmbxReporte.getSelectedItem().toString()) {
+                case "Arbol":
+                    ruta = "./ARBOLES_201904061/" + CmbxElemento.getSelectedItem().toString() + ".jpg";
+                    break;
+                case "Tabla de Siguientes":
+                    ruta = "./SIGUIENTES_201904061/" + CmbxElemento.getSelectedItem().toString() + ".jpg";
+                    break;
+                case "Tabla de Transiciones":
+                    ruta = "./TRANSICIONES_201904061/" + CmbxElemento.getSelectedItem().toString() + ".jpg";
+                    break;
+                case "AFD":
+                    ruta = "./AFD_201904061/" + CmbxElemento.getSelectedItem().toString() + ".jpg";
+                    break;
+                case "AFND":
+                    ruta = "./AFND_201904061/" + CmbxElemento.getSelectedItem().toString() + ".jpg";
+                    break;
+                default:
+                    System.out.println(ruta);
+            }
             //ImageIcon imagen = new ImageIcon(ruta);
             Image imagen = new ImageIcon(ruta).getImage();
             ImageIcon img = new ImageIcon(imagen.getScaledInstance(Display.getWidth(), Display.getHeight(), Image.SCALE_SMOOTH));
@@ -87,7 +106,7 @@ public class Pantalla extends javax.swing.JFrame {
                         Scanner scanner = new Scanner(AppState.filePath);
                         AppState.texto = "";
                         while (scanner.hasNextLine()) {
-                            AppState.texto += scanner.nextLine();
+                            AppState.texto += scanner.nextLine() + "\n";
                         }
                         Texto.setText(AppState.texto);
                     } catch (Exception e) {
@@ -181,7 +200,7 @@ public class Pantalla extends javax.swing.JFrame {
 
         LblNombre.setText("Reporte:");
 
-        CmbxReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"arboles", "tablasdeSiguientes", "tabladeTransiciones", "automatas", "thomson"}));
+        CmbxReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Arbol", "Tabla de Siguientes", "Tabla de Transiciones", "AFD", "AFND"}));
         CmbxReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CmbxReporteActionPerformed(evt);

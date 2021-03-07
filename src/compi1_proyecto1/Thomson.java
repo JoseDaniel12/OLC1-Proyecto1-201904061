@@ -23,7 +23,7 @@ public class Thomson {
         pw.println(texto);
         fw.close();
         Runtime rt = Runtime.getRuntime();
-        Process proc = rt.exec("dot -Tjpg " + raiz.nombre + ".dot -o ./thomson/" + raiz.nombre + ".jpg");
+        Process proc = rt.exec("dot -Tjpg " + raiz.nombre + ".dot -o ./AFND_201904061/" + raiz.nombre + ".jpg");
         int exitVal = proc.waitFor();
         File f = new File(raiz.nombre + ".dot");
         f.delete();

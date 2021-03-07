@@ -69,7 +69,7 @@ public class Automata {
             pw.println("}");
             fw.close();
             Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec("dot -Tjpg " + nombre + ".dot -o ./automatas/" + nombre + ".jpg");
+            Process proc = rt.exec("dot -Tjpg " + nombre + ".dot -o ./AFD_201904061/" + nombre + ".jpg");
             int exitVal = proc.waitFor();
             File f = new File(nombre + ".dot");
             f.delete();

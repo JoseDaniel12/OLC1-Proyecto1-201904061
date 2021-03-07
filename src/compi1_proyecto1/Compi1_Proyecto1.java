@@ -1,5 +1,8 @@
 package compi1_proyecto1;
 
+import static compi1_proyecto1.AppState.vaciarCarpeta;
+import java.io.File;
+
 /**
  *
  * @author José Alvarado
@@ -32,6 +35,8 @@ public class Compi1_Proyecto1 {
             java.util.logging.Logger.getLogger(Pantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        AppState.vaciarCarpeta(new File("./SALIDAS_201904061"));
+        AppState.vaciarCarpeta(new File("./ERR0RES_201904061"));
         Pantalla ventana = new Pantalla();
         ventana.setVisible(true);  
     }

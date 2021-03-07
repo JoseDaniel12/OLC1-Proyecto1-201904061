@@ -156,7 +156,7 @@ public class TablaTransiciones {
             pw.println("}");
             fw.close();
             Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec("dot -Tjpg " + nombre + ".dot -o ./tabladeTransiciones/" + nombre + ".jpg");
+            Process proc = rt.exec("dot -Tjpg " + nombre + ".dot -o ./TRANSICIONES_201904061/" + nombre + ".jpg");
             int exitVal = proc.waitFor();
             File f = new File(nombre + ".dot");
             f.delete();

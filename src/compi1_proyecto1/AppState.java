@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  * @author José Alvarado
@@ -25,7 +26,7 @@ public class AppState {
     public static ArrayList<Errorr> errores = new ArrayList<>();
 
     public static void graficarArboles() {
-        vaciarCarpeta(new File("./arboles"));
+        vaciarCarpeta(new File("./ARBOLES_201904061"));
         FileWriter fw;
         PrintWriter pw;
         for (int i = 0; i < arboles.size(); i++) {
@@ -42,7 +43,7 @@ public class AppState {
                 pw.println("}");
                 fw.close();
                 Runtime rt = Runtime.getRuntime();
-                Process proc = rt.exec("dot -Tjpg " + nombre + ".dot -o ./arboles/" + nombre + ".jpg");
+                Process proc = rt.exec("dot -Tjpg " + nombre + ".dot -o ./ARBOLES_201904061/" + nombre + ".jpg");
                 int exitVal = proc.waitFor();
                 File f = new File(nombre + ".dot");
                 f.delete();
@@ -53,14 +54,14 @@ public class AppState {
     }
 
     public static void graficarThomson() throws IOException, InterruptedException {
-        vaciarCarpeta(new File("./thomson"));
+        vaciarCarpeta(new File("./AFND_201904061"));
         for (Nodo arbol : arboles) {
             Thomson.graficar(arbol);
         }
     }
 
     public static void crearTablasdeSiguientes() {
-        vaciarCarpeta(new File("./tablasdeSiguientes"));
+        vaciarCarpeta(new File("./SIGUIENTES_201904061"));
         int contador = 0;
         for (Nodo arbol : arboles) {
             tablasdeSiguientes.add(new TabladeSiguientes(arbol, hojas.get(contador)));
@@ -69,7 +70,7 @@ public class AppState {
     }
 
     public static void graficarTablasdeSiguientes() throws InterruptedException {
-        vaciarCarpeta(new File("./tabladeTransiciones"));
+        vaciarCarpeta(new File("./SIGUIENTES_201904061"));
         for (int i = 0; i < tablasdeSiguientes.size(); i++) {
             tablasdeSiguientes.get(i).graficar();
         }
@@ -83,6 +84,7 @@ public class AppState {
     }
 
     public static void graficarTablasdeTransiciones() throws InterruptedException {
+        vaciarCarpeta(new File("./TRANSICIONES_201904061"));
         for (int i = 0; i < tablasdeTransiciones.size(); i++) {
             tablasdeTransiciones.get(i).graficar();
         }
@@ -97,7 +99,7 @@ public class AppState {
     }
 
     public static void graficarAutomatas() throws InterruptedException {
-        vaciarCarpeta(new File("./automatas"));
+        vaciarCarpeta(new File("./AFD_201904061"));
         for (int i = 0; i < automatas.size(); i++) {
             automatas.get(i).graficar();
         }
@@ -135,9 +137,18 @@ public class AppState {
             json += "\t},\n";
         }
         json += "]";
-        FileWriter archivo = new FileWriter("./json.json");
-        archivo.write(json);
-        archivo.close();
+        if (evaluaciones.size() > 0) {
+            if (filePath != null) {
+                String nombre = filePath.getName().substring(0, filePath.getName().indexOf("."));
+                FileWriter archivo = new FileWriter("./SALIDAS_201904061/" + nombre + ".json");
+                archivo.write(json);
+                archivo.close();
+            } else {
+                FileWriter archivo = new FileWriter("./SALIDAS_201904061/Validaciones.json");
+                archivo.write(json);
+                archivo.close();
+            }
+        }
     }
 
     public static void reportar() throws IOException {
@@ -160,6 +171,7 @@ public class AppState {
         texto += "\t</td>";
         int contador = 0;
         for (Errorr errorr : errores) {
+            Pantalla.Consola.setText(Pantalla.Consola.getText() + errorr.descripcion + ", linea:" + errorr.linea + ".\n");
             texto += "\t<tr>\n";
             texto += "\t\t<td>" + (contador++) + "</td>\n";
             texto += "\t\t<td>" + errorr.tipo + "</td>\n";
@@ -169,13 +181,21 @@ public class AppState {
             texto += "\t</td>";
         }
         texto += "</table>";
-        FileWriter archivo = new FileWriter("./Reporte de Errores.html");
-        archivo.write(texto);
-        archivo.close();
+        if (errores.size() > 0) {
+            if (filePath != null) {
+                String nombre = filePath.getName().substring(0, filePath.getName().indexOf("."));
+                FileWriter archivo = new FileWriter("./ERR0RES_201904061/" + nombre + ".html");
+                archivo.write(texto);
+                archivo.close();
+            } else {
+                FileWriter archivo = new FileWriter("./ERR0RES_201904061/Reporte de Errores.html");
+                archivo.write(texto);
+                archivo.close();
+            }
+        }
     }
 
     public static void reiniciar() {
-        filePath = null;
         texto = "";
         hojas = new ArrayList<>();
         arboles = new ArrayList<>();

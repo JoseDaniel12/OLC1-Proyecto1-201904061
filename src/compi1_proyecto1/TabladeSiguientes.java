@@ -136,7 +136,7 @@ public class TabladeSiguientes {
             pw.println("}");
             fw.close();
             Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec("dot -Tjpg " + nombre + ".dot -o ./tablasdeSiguientes/" + nombre + ".jpg");
+            Process proc = rt.exec("dot -Tjpg " + nombre + ".dot -o ./SIGUIENTES_201904061/" + nombre + ".jpg");
             int exitVal = proc.waitFor();
             File f = new File(nombre + ".dot");
             f.delete();
