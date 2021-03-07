@@ -545,6 +545,9 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
+                if (a.startsWith("\"") && a.endsWith("\"")) {
+                   a = a.substring(1, a.length()-1); 
+                } 
                 RESULT = new Nodo("",idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);  
                 hojas.put(idHoja + "", a); 
                 idHoja++;
@@ -561,8 +564,11 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                RESULT=new Nodo("",idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
-                hojas.put(idHoja + "", a.replace("\"", "")); 
+                if (a.startsWith("\"") && a.endsWith("\"")) {
+                   a = a.substring(1, a.length()-1); 
+                } 
+                RESULT=new Nodo("",idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
+                hojas.put(idHoja + "", a); 
                 idHoja++;
               
               CUP$parser$result = parser.getSymbolFactory().newSymbol("EXPRESION",6, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);

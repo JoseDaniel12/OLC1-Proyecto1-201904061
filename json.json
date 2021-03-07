@@ -1,22 +1,32 @@
 [ 
 	{
-		"Valor":"hola_soy_id_1",
-		"ExpresionRegular":"identificador",
+		"Valor":"\'cadena entre comilla simple\'",
+		"ExpresionRegular":"EXP5",
 		"Resultado":"Cadena Válida",
 	},
 	{
-		"Valor":"HoLA",
-		"ExpresionRegular":"identificador",
-		"Resultado":"Cadena No Válida",
-	},
-	{
-		"Valor":"301.59",
-		"ExpresionRegular":"decimales",
-		"Resultado":"Cadena No Válida",
-	},
-	{
-		"Valor":"1200.31",
-		"ExpresionRegular":"decimales",
+		"Valor":"P-385fde",
+		"ExpresionRegular":"Pl",
 		"Resultado":"Cadena Válida",
+	},
+	{
+		"Valor":"P388fdc",
+		"ExpresionRegular":"Pl",
+		"Resultado":"Cadena Válida",
+	},
+	{
+		"Valor":"P38df8c",
+		"ExpresionRegular":"Pl",
+		"Resultado":"Cadena No Válida",
+	},
+	{
+		"Valor":"P-38df8k",
+		"ExpresionRegular":"Pl",
+		"Resultado":"Cadena No Válida",
+	},
+	{
+		"Valor":"K-385ffk",
+		"ExpresionRegular":"Pl",
+		"Resultado":"Cadena No Válida",
 	},
 ]

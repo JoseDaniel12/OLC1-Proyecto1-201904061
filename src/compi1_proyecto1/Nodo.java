@@ -7,6 +7,7 @@ import java.util.List;
  * @author José Alvarado
  */
 public class Nodo {
+
     String nombre = "";
     public String id;
     public String valor;
@@ -36,7 +37,7 @@ public class Nodo {
         this.lasts = new ArrayList<>();
         this.hizq = hizq;
         this.hder = hder;
-        
+
         switch (valor) {
             case "|":
                 this.anunabilidad = ("A".equals(hizq.anunabilidad) || "A".equals(hder.anunabilidad)) ? "A" : "N";
@@ -84,21 +85,24 @@ public class Nodo {
     public String getDotText() {
         String etiqueta = "";
         if (valor != null) {
-            String valorText = ("|".equals(valor))? "\\|": valor;
+            String valorText = valor;
+            valorText = ("|".equals(valor)) ? "\\|" : valorText;
+            valorText = ("\\n".equals(valor)) ? "\\\\n" : valorText;
+            valorText = ("\\\"".equals(valor)) ? "\\\\\"" : valorText;
             String firstsText = String.join(",", firsts.toString());
             String lastsText = String.join(",", lasts.toString());
             if (hizq == null && hder == null) {
-                etiqueta = "nodo" + id + "[label= \"" 
-                            + firstsText.substring(1, firstsText.length()-1)
-                            + "|{" + anunabilidad + "|" + valorText  + "|" + "id: " + id + "}|"
-                            + lastsText.substring(1, lastsText.length()-1)
-                            + "\"];\n";
+                etiqueta = "nodo" + id + "[label= \""
+                        + firstsText.substring(1, firstsText.length() - 1)
+                        + "|{" + anunabilidad + "|" + valorText + "|" + "id: " + id + "}|"
+                        + lastsText.substring(1, lastsText.length() - 1)
+                        + "\"];\n";
             } else {
-                etiqueta = "nodo" + id + "[label= \"" 
-                    + firstsText.substring(1, firstsText.length()-1)
-                    + "|{" + anunabilidad + "|" + valorText + "}|"
-                    + lastsText.substring(1, lastsText.length()-1)
-                    + "\"];\n";
+                etiqueta = "nodo" + id + "[label= \""
+                        + firstsText.substring(1, firstsText.length() - 1)
+                        + "|{" + anunabilidad + "|" + valorText + "}|"
+                        + lastsText.substring(1, lastsText.length() - 1)
+                        + "\"];\n";
             }
             if (hizq != null) {
                 etiqueta += hizq.getDotText() + "nodo" + id + "->nodo" + hizq.id + ";\n";

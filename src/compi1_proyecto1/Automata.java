@@ -141,8 +141,6 @@ public class Automata {
             }
             if (nivel.size() != 0) {
                 caminos.add(nivel);
-            } else {
-                return false;
             }
         }
         for (ArrayList<String> nodo : caminos.get(caminos.size() - 1)) {

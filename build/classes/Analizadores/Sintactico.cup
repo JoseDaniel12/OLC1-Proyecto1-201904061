@@ -125,14 +125,20 @@ EXPRESION ::= punto EXPRESION:a EXPRESION:b  {:RESULT=new Nodo("","H" + contador
               |interrogacion EXPRESION:a     {:RESULT=new Nodo("","H" + contador, "?", a, null); contador++;:}
               |llaveA identificador:a llaveC 
               {:
+                if (a.startsWith("\"") && a.endsWith("\"")) {
+                   a = a.substring(1, a.length()-1); 
+                } 
                 RESULT = new Nodo("",idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null);  
                 hojas.put(idHoja + "", a); 
                 idHoja++;
               :}
               |simbolo:a
               {:
-                RESULT=new Nodo("",idHoja + "", a.substring(1,a.length()-1), "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
-                hojas.put(idHoja + "", a.replace("\"", "")); 
+                if (a.startsWith("\"") && a.endsWith("\"")) {
+                   a = a.substring(1, a.length()-1); 
+                } 
+                RESULT=new Nodo("",idHoja + "", a, "N", Arrays.asList(idHoja + ""), Arrays.asList(idHoja + ""), null, null); 
+                hojas.put(idHoja + "", a); 
                 idHoja++;
               :}
 ;

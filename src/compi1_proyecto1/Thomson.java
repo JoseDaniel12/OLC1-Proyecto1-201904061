@@ -46,11 +46,15 @@ public class Thomson {
                 return interrogacion(codigoInterno(raiz.hizq));
             } else {
                 contador++;
+                String valorText = raiz.valor;
+                valorText = ("|".equals(raiz.valor)) ? "\\|" : valorText;
+                valorText = ("\\n".equals(raiz.valor)) ? "\\\\n" : valorText;
+                valorText = ("\\\"".equals(raiz.valor)) ? "\\\\\"" : valorText;
                 if ("#".equals(raiz.valor)) {
-                    texto += "S" + (contador+1) + " [shape = doublecircle]";
-                    texto += "S" + (contador) + " -> " + "S" + (contador + 1) + "[ label = \"" + raiz.valor + "\" ]\n";
+                    texto += "S" + (contador + 1) + " [shape = doublecircle]";
+                    texto += "S" + (contador) + " -> " + "S" + (contador + 1) + "[ label = \"" + valorText + "\" ]\n";
                 } else {
-                    texto += "S" + (contador) + " -> " + "S" + (contador + 1) + "[ label = \"" + raiz.valor + "\" ]\n";
+                    texto += "S" + (contador) + " -> " + "S" + (contador + 1) + "[ label = \"" + valorText + "\" ]\n";
                 }
 
                 res[0] = contador;
@@ -91,7 +95,7 @@ public class Thomson {
         int[] res = new int[2];
         contador++;
         texto += "S" + (contador) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "S" + (p1[1]) + " -> " + "S" + (contador+1) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
         texto += "S" + (contador) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
         contador += 1;
         res[0] = contador - 1;
