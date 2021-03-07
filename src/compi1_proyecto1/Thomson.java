@@ -91,8 +91,8 @@ public class Thomson {
         int[] res = new int[2];
         contador++;
         texto += "S" + (contador) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "S" + (p1[1]) + " -> " + "S" + (p1[0]) + "[ label = \"ε\" ]\n";
-        texto += "S" + (p1[1]) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
+        texto += "S" + (p1[1]) + " -> " + "S" + (contador+1) + "[ label = \"ε\" ]\n";
+        texto += "S" + (contador) + " -> " + "S" + (contador + 1) + "[ label = \"ε\" ]\n";
         contador += 1;
         res[0] = contador - 1;
         res[1] = contador;
