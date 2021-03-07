@@ -35,10 +35,32 @@ public class Compi1_Proyecto1 {
             java.util.logging.Logger.getLogger(Pantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        AppState.vaciarCarpeta(new File("./SALIDAS_201904061"));
-        AppState.vaciarCarpeta(new File("./ERR0RES_201904061"));
+        File directorio = new File("./ARBOLES_201904061");
+        directorio.mkdirs();
+        directorio = new File("./SIGUIENTES_201904061");
+        directorio.mkdirs();
+        directorio = new File("./TRANSICIONES_201904061");
+        directorio.mkdirs();
+        directorio = new File("./AFD_201904061");
+        directorio.mkdirs();
+        directorio = new File("./AFND_201904061");
+        directorio.mkdirs();
+        directorio = new File("./SALIDAS_201904061");
+        directorio.mkdirs();
+        directorio = new File("./ERR0RES_201904061");
+        directorio.mkdirs();
+        try {
+            AppState.vaciarCarpeta(new File("./ARBOLES_201904061"));
+            AppState.vaciarCarpeta(new File("./SIGUIENTES_201904061"));
+            AppState.vaciarCarpeta(new File("./TRANSICIONES_201904061"));
+            AppState.vaciarCarpeta(new File("./AFD_201904061"));
+            AppState.vaciarCarpeta(new File("./AFND_201904061"));
+            AppState.vaciarCarpeta(new File("./SALIDAS_201904061"));
+            AppState.vaciarCarpeta(new File("./ERR0RES_201904061"));
+        } catch(Exception e)  {
+        }
         Pantalla ventana = new Pantalla();
-        ventana.setVisible(true);  
+        ventana.setVisible(true);
     }
-    
+
 }
