@@ -51,11 +51,11 @@ public class AppState {
             }
         }
     }
-    
+
     public static void graficarThomson() throws IOException, InterruptedException {
         vaciarCarpeta(new File("./thomson"));
         for (Nodo arbol : arboles) {
-           Thomson.graficar(arbol);
+            Thomson.graficar(arbol);
         }
     }
 
@@ -139,9 +139,18 @@ public class AppState {
         archivo.write(json);
         archivo.close();
     }
-    
+
     public static void reportar() throws IOException {
-        String texto = "<table>\n";
+        String texto = "<style> \n";
+        texto += "table, \n";
+        texto += "th, \n";
+        texto += "td { \n";
+        texto += "padding: 10px;     \n";
+        texto += "border: 1px solid black; \n";
+        texto += "border-collapse: collapse; \n";
+        texto += "} \n";
+        texto += " </style> \n";
+        texto += "<table >\n";
         texto += "\t<tr>\n";
         texto += "\t\t<td>#</td>\n";
         texto += "\t\t<td>Tipo de Error</td>\n";
@@ -149,18 +158,18 @@ public class AppState {
         texto += "\t\t<td>Linea</td>\n";
         texto += "\t\t<td>Columna</td>\n";
         texto += "\t</td>";
-        int contador  = 0;
+        int contador = 0;
         for (Errorr errorr : errores) {
-            texto+= "\t<tr>\n";
-            texto+= "\t\t<td>" + (contador++) +  "</td>\n";
-            texto+= "\t\t<td>" + errorr.tipo +  "</td>\n";
-            texto+= "\t\t<td>" + errorr.descripcion +  "</td>\n";
-            texto+= "\t\t<td>" + errorr.linea +  "</td>\n";
-            texto+= "\t\t<td>" + errorr.columna +  "</td>\n";
-            texto+= "\t</td>";
+            texto += "\t<tr>\n";
+            texto += "\t\t<td>" + (contador++) + "</td>\n";
+            texto += "\t\t<td>" + errorr.tipo + "</td>\n";
+            texto += "\t\t<td>" + errorr.descripcion + "</td>\n";
+            texto += "\t\t<td>" + errorr.linea + "</td>\n";
+            texto += "\t\t<td>" + errorr.columna + "</td>\n";
+            texto += "\t</td>";
         }
         texto += "</table>";
-        FileWriter archivo = new FileWriter("./Reporte de Eerrores.html");
+        FileWriter archivo = new FileWriter("./Reporte de Errores.html");
         archivo.write(texto);
         archivo.close();
     }
